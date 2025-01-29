@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My New Website</title>
+    <link rel="stylesheet" href="styles.css"> <!-- เชื่อมไฟล์ CSS -->
+    <style>
+    /* รีเซ็ต CSS สำหรับหน้าจอ */
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .falling-squares-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .square { /* สี่เหลี่ยม */
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #64c8c6; 
+            top: -50px; /* เริ่มจากด้านบน */
+            animation: fall linear infinite;
+        }        
+        @keyframes fall { /* การเคลื่อนไหวสี่เหลี่ยม */ 
+            0% {
+                transform: translateY(-50px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        .shape {
+            position: absolute;
+            transform: scale(0);
+            animation: grow-shrink 1.5s ease-out forwards;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 120px solid #ff8fa5;
+        }
+        .hexagon {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        .Diamond {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+        }
+        .star {
+            width: 150px;
+            height: 150px;
+            background-color: #ff8fa5;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        @keyframes grow-shrink {
+            0% {
+            transform: scale(0);
+            opacity: 1;
+            }
+            50% {
+            transform: scale(1.5);
+            }
+            100% {
+            transform: scale(0);
+            opacity: 0;
+            }
+        }
+
+         /* จัดการส่วนของ Body */
+         body {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* ความสูงเต็มหน้าจอ */
+            margin: 0;
+            justify-content: space-between; /* กำหนดให้เนื้อหาอยู่ด้านบน และ footer อยู่ด้านล่าง */
+            font-family: Arial, sans-serif;
+            color: #c9ceec;
+            background-color: #edd8db;
+        }
+
+        @keyframes slideInRight {
+            20% {
+            transform: translateX(100%); /* เริ่มจากนอกหน้าจอ */
+            background-color: #edd8db; /* เริ่มด้วยสีดำ */
+            opacity: 0; /* โปร่งใส */
+        }
+            80% {
+            background-color: #ff8fa5; /* เปลี่ยนเป็นสีฟ้าตอนกลาง */
+            opacity: 1; /* แสดงเต็ม */
+        }
+            100% {
+            transform: translateX(0); /* มาถึงตำแหน่งสุดท้าย */
+            background-color: #000000; /* คงสีฟ้าไว้ */
+            opacity: 1;
+        }}
+        h1{
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(255, 243, 243);
+            font-weight: 700;
+            font-size: 30px;
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 54px;
+            margin: 60px 0px 20px 50px;
+            text-align: left;
+        }
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 25px;
+            text-align: left;
+            margin-bottom: 10px;
+
+        }
+        h5 {
+            font-family: 'Montserrat', sans-serif;
+            color: #ff8fa5;
+            font-weight: 700;
+            font-size: 30px;
+            text-align: center;
+        }
+        .p {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 5px;
+            line-height: 1.8;
+        }
+        .p2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 5px;
+            line-height: 1.8;
+            margin-left: 50px;
+        }
+        .description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 200;
+            color: rgb(0, 0, 0);
+            margin-top: 20px; /* เว้นระยะห่างระหว่างรูปกับข้อความ */
+            text-align: left;
+        }
+
+        
+        /* การตั้งค่าพื้นฐานสำหรับ header */
+        header {
+            display: flex;
+            justify-content: flex-start; /* ทำให้ข้อความชิดซ้าย */
+            align-items: center;
+            background-color: #0a0a0a;  /* สีพื้นหลังคล้ายกับในเว็บไซต์ */
+            padding: 30px;
+            height: 15vh;  /* ใช้ความสูงเต็มหน้าจอ */
+            z-index: 10;
+        }
+
+        /* ช่องแต่ละช่องใน header */
+        .header-item {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 50px;
+            position: relative;
+            color: #d1d1d1;
+            text-transform: uppercase;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        /* การจัดการลิงก์ */
+        .header-item a {
+            color: inherit;
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 15px;
+            transition: transform 0.3s, color 0.3s;
+            border-right: 3px solid white; /* เพิ่มเส้นใต้ข้อความ */
+            padding-right: 10px;
+        }
+
+        /* เอฟเฟกต์เมื่อเมาส์ชี้ไปที่ลิงก์ */
+        .header-item a:hover {
+            color: #ff70a6;  /* เปลี่ยนสีเมื่อ hover */
+            transform: translateY(-5px);  /* เคลื่อนที่ขึ้นเล็กน้อย */
+        }
+
+        /* เพิ่มเส้นใต้เมื่อ hover */
+        .header-item a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff70a6;  /* สีของเส้นใต้ */
+            transition: width 0.3s;
+        }
+
+        .header-item a:hover::after {
+            width: 100%;  /* เส้นใต้จะขยายเต็มความยาว */
+        }
+
+        /* การจัดการการเปลี่ยนสีเมื่อเมาส์ชี้ */
+        .header-item:hover {
+            color: #ff70a6;  /* เปลี่ยนสีข้อความ */
+        }
+
+        /* การเพิ่มการเคลื่อนไหว */
+        header {
+            animation: headerAnimation 1.5s ease-out forwards;
+        }
+        .header-left {
+            text-align: left;
+            color: white;
+            font-size: 15px;
+            margin-right: 180px ;
+        }
+
+        @keyframes headerAnimation {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .slideshow-container {
+            max-width: 1200px;
+            position: relative;
+            margin: 0; /* ลบ margin เพื่อให้ชิดซ้าย */
+            padding: 0; /* ลบ padding หากมี */
+            overflow: hidden;
+            border-radius: 10px;
+            display: flex;
+            justify-content: flex-start; /* ชิดซ้าย */
+            align-items: center; /* จัดแนวในแนวตั้ง */
+        }
+
+        .mySlides {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            flex: 1;
+        }
+
+        .active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        img {
+            width: 50%;
+            height: auto;
+            margin: 10px 0px 0px 20px;  /* ลด margin ด้านบนและด้านล่าง */
+            border: 4px solid #000000;
+            z-index: 10;
+        }
+
+        footer {
+            margin-top: auto; /* ทำให้ footer ดันตัวเองไปล่างสุด */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 360px;
+            background-color: #252525;
+            color: #fff;
+            width: 100%;
+            margin-top: 100px;
+            z-index: 10;
+        }           
+        .footer-section {
+            width: 33%;
+            text-align: center; 
+            border-right: 3px solid #fff; /* เส้นขวา */
+            height: 80%;
+        }.footer-section:last-child {
+            border-right: none; /* เอาเส้นขวาออก */
+        }
+        .footer-section h3 {
+            margin-top: 0;
+            color: #e87d93; /* สีหัวข้อ */
+            font-size: 28px;
+        }
+        .footer-section p {
+            margin: 40px 5px 5px 40px ;
+            text-align: left; /* ให้ข้อความชิดซ้าย */
+            font-size: 18px;
+        }
+        a {
+            color: #64c8c6;  /* เปลี่ยนสีลิงก์เป็นสีฟ้า */
+            text-decoration: none;  /* ไม่ให้มีเส้นใต้ */
+        }
+        a:hover {
+            color: #e87d93;  /* เปลี่ยนสีลิงก์เมื่อเมาส์ชี้ */
+            text-decoration: underline;  /* เพิ่มเส้นใต้เมื่อเมาส์ชี้ */
+        }
+    </style>
+</head>
+<body>
+        <div class="square" style="left: 55%; animation-duration: 2s; animation-delay: 1s;"></div>
+        <div class="square" style="left: 30%; animation-duration: 3s; animation-delay: 2s;"></div>
+        <div class="square" style="left: 70%; animation-duration: 2s; animation-delay: 1.5s;"></div>
+        <div class="falling-squares-container">
+        <!-- สี่เหลี่ยม -->
+        <div class="square" style="left: 10%; animation-duration: 1s; animation-delay: 0s;"></div>
+        <div class="square" style="left: 20%; animation-duration: 3s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 90%; animation-duration: 6s; animation-delay: 1.5s;"></div>
+        <div class="square" style="left: 15%; animation-duration: 2s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 80%; animation-duration: 1s; animation-delay: 0.5s;"></div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <h1>แนะนำมหาวิทยาลัย<br>ภาคตะวันออกเฉียงเหนือ</h1>
+        </div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic1.html">มหาวิทยาลัย<br>ภาคเหนือ</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic2.html">มหาวิทยาลัย<br>ภาคกลาง</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic5.html">มหาวิทยาลัย<br>ภาคใต้</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic3.html">แนะนำวิธีสมัครการ<br>เข้ามหาวิทยาลัย</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\project.html">หน้าหลัก</a></div>
+        
+    </header>
+        <div> 
+            <h2>
+                1.มหาวิทยาลัยขอนแก่น (KKU.)
+            </h2>
+            <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
+                <!-- รูปภาพ -->
+                <img src="KKU.topic.png" alt="University" style="margin-bottom: 20px; width: 70%; height: auto; border: 4px solid #000000;">
+            
+                <!-- ข้อความที่จัดเรียง 3 ส่วนในบรรทัดเดียวกัน -->
+                <div style="display: flex; justify-content: space-between; width: 100%; gap: 20px; flex-wrap: wrap;">
+                    <!-- ส่วนที่ 1 -->
+                    <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                        <h3>ประวัติของมหาวิทยาลัย</h3>
+                        <p class="p2">มหาวิทยาลัยขอนแก่น (Khon Kaen University ) ก่อตั้งขึ้นในปี พ.ศ. 2507 </p2>
+                        <p class="p">ถือเป็นมหาวิทยาลัยแห่งแรกในภาคตะวันออกเฉียงเหนือของประเทศไทย โดยมีจุดมุ่งหมายเพื่อพัฒนาการศึกษาและองค์ความรู้ให้กับภูมิภาคที่มีประชากรถึงหนึ่งในสามของประเทศ มข. ตั้งอยู่ในพื้นที่บ้านสีฐาน จังหวัดขอนแก่น บนพื้นที่ประมาณ 5,800 ไร่ และมีชื่อเล่นว่า “มอดินแดง” ซึ่งสะท้อนถึงลักษณะภูมิประเทศแบบเนินดินสีแดงที่เป็นเอกลักษณ์ของมหาวิทยาลัย</p>
+                        
+                        <p class="p2">ในช่วงแรก มข. เริ่มด้วยการสร้างอาคารคณะวิทยาศาสตร์</p2>
+                        <p class="p">-อักษรศาสตร์ และรับนักศึกษารุ่นแรก 107 คน เมื่อวันที่ 24 มิถุนายน พ.ศ. 2507 ต่อมาในปี พ.ศ. 2509 ได้มีการตราพระราชบัญญัติมหาวิทยาลัยขอนแก่นอย่างเป็นทางการ โดยมุ่งมั่นเป็นศูนย์กลางทางการศึกษาที่มีบทบาทในการแก้ปัญหาและพัฒนาสังคมในภาคตะวันออกเฉียงเหนือ และได้ขยายบทบาทในระดับนานาชาติด้วยความช่วยเหลือด้านการวิจัย การเกษตร และการสาธารณสุขแก่ประเทศเพื่อนบ้านในภูมิภาคอินโดจีน</p>
+                        
+                        <p class="p"><a href="https://www.kku.ac.th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+                    </div>
+            
+                    <!-- ส่วนที่ 2 -->
+                    <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                        <h3>หอพักใกล้มหาวิทยาลัยขอนแก่น</h3>
+                        <p class="p">
+            <b>1. กาซะลองเพลส </b>
+            ตั้งอยู่บนถนนหลัง ม.ขอนแก่น เขตศิลา ราคา 4,000-4,500 บาท/เดือน ห่างจากมหาวิทยาลัยเพียง 1.4 กิโลเมตร มีบรรยากาศสงบ เหมาะสำหรับนักศึกษา<br><a href="https://www.renthub.in.th/%E0%B8%81%E0%B8%B2%E0%B8%8B%E0%B8%B0%E0%B8%A5%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%9E%E0%B8%A5%E0%B8%AA">ข้อมูลเพิ่มเติม </a>
+    
+            <br><b>2. พสิษฐ์ แมนชั่น</b>
+            ตั้งอยู่ที่ซอยอดุลยาราม ถนนมิตรภาพ (ฝั่งกังสดาล) ราคา 2,900-3,500 บาท/เดือน ห่างเพียง 1.4 กิโลเมตร มีสิ่งอำนวยความสะดวกครบครัน<a href="https://www.renthub.in.th/%E0%B8%9E%E0%B8%AA%E0%B8%B4%E0%B8%A9%E0%B8%90%E0%B9%8C-%E0%B9%81%E0%B8%A1%E0%B8%99%E0%B8%8A%E0%B8%B1%E0%B9%88%E0%B8%99-%E0%B8%82%E0%B8%AD%E0%B8%99%E0%B9%81%E0%B8%81%E0%B9%88%E0%B8%99-%E0%B8%9D%E0%B8%B1%E0%B9%88%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%94%E0%B8%B2%E0%B8%A5-%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%87-%E0%B8%A1%E0%B8%82">ข้อมูลเพิ่มเติม</a>
+    
+            <br><b>3. หอพักหญิงพริมโรสเรสซิเดนซ์</b>
+            ตั้งอยู่ที่ซอยอดุลยาราม 3 ถนนมิตรภาพ ราคา 4,800 บาท/เดือน ใกล้มหาวิทยาลัยเพียง 1.5 กิโลเมตร เหมาะสำหรับนักศึกษาหญิงที่ต้องการความเป็นส่วนตัว​​<a href="https://www.renthub.in.th/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B8%AB%E0%B8%8D%E0%B8%B4%E0%B8%87%E0%B8%9E%E0%B8%A3%E0%B8%B4%E0%B8%A1%E0%B9%82%E0%B8%A3%E0%B8%AA%E0%B9%80%E0%B8%A3%E0%B8%AA%E0%B8%8B%E0%B8%B4%E0%B9%80%E0%B8%94%E0%B8%99%E0%B8%8B%E0%B9%8C-%E0%B8%9D%E0%B8%B1%E0%B9%88%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%94%E0%B8%B2%E0%B8%A5-%E0%B8%A1-%E0%B8%82%E0%B8%AD%E0%B8%99%E0%B9%81%E0%B8%81%E0%B9%88%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+    
+            <br><b>4. โรงแรม เดอะวันเพลส ขอนแก่น</b>
+            ใกล้ถนนพระราม 1 ห่างจากจุฬาลงกรณ์มหาวิทยาลัยประมาณ 1 กม. ราคาห้องเริ่มต้นที่ 8,000-12,000 บาท/เดือน<a href="https://www.agoda.com/th-th/the-1-place-khonkaen/hotel/khon-kaen-th.html?cid=1844104">ข้อมูลเพิ่มเติม</a>
+    
+            <br><b>5. UK Apartment </b>
+            งอยู่ใกล้มหาวิทยาลัยขอนแก่น (ซอยโคลัมโบ 2) มีห้องพักขนาด 26 ตร.ม. พร้อมเฟอร์นิเจอร์ครบครัน เช่น แอร์ เครื่องทำน้ำอุ่น และอินเทอร์เน็ต ค่าเช่าเริ่มต้นที่ 3,000-4,000 บาท<br><a href="https://www.renthub.in.th/uk-apartment-%E0%B8%A2%E0%B8%B9%E0%B9%80%E0%B8%84-%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+            </p>
+            </div>
+            
+                    <!-- ส่วนที่ 3 -->
+                    <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                        <h3>ผลงานของมหาวิทยาลัยขอนแก่น</h3>
+                        <p class="p">
+        
+                    <b>งานวิจัยเชิงพาณิชย์:</b> มหาวิทยาลัยขอนแก่นมี 8 ผลงานวิจัยที่ได้รับการขึ้นทะเบียนทรัพย์สินทางปัญญาและพร้อมต่อยอดสู่ตลาดเชิงพาณิชย์ เช่น การนำเสนอในงาน "PMUC Research for Thailand’s Competitiveness 2023" เพื่อเชื่อมโยงการวิจัยกับเศรษฐกิจ
+                    <br><b>การพัฒนานักศึกษาและบุคลากรดีเด่น:</b> ในปี 2567 บัณฑิตวิทยาลัยได้รับคัดเลือกให้จัดแสดงผลงานด้านการพัฒนานักศึกษาที่โดดเด่น
+                    มีบุคลากรได้รับรางวัลด้านนวัตกรรม เช่น นายอภิเชษฐ์ บุญจวง ที่ได้รับรางวัลบุคลากรดีเด่นด้านนวัตกรรม​
+                    <br><b>การพัฒนาวัสดุทางการแพทย์: </b> การพัฒนา "Hydroxyapatite Foam" สำหรับช่วยฟื้นฟูกระดูกและฟัน ซึ่งมีศักยภาพสำหรับการพัฒนาในอุตสาหกรรม
+                    <br><b>นวัตกรรมด้านอุตสาหกรรมอาหาร: </b> การผลิต "ไขมันทรานส์ต่ำจากน้ำมันปาล์ม" ซึ่งได้รับการจดสิทธิบัตรและช่วยลดความเสี่ยงต่อสุขภาพ​
+                </p>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    <div> 
+        <h2>
+            2.มหาวิทยาลัยมหาสารคาม (MSU.)
+        </h2>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
+        <!-- รูปภาพ -->
+        <img src="MSU.topic.png" alt="University" style="margin-bottom: 20px; width: 70%; height: auto; border: 4px solid #000000;">
+    
+        <!-- ข้อความที่จัดเรียง 3 ส่วนในบรรทัดเดียวกัน -->
+        <div style="display: flex; justify-content: space-between; width: 100%; gap: 20px; flex-wrap: wrap;">
+            <!-- ส่วนที่ 1 -->
+            <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h3>ประวัติของมหาวิทยาลัย</h3>
+                <p class="p2">มหาวิทยาลัยมหาสารคาม (Mahasarakham University) </p2>
+                <p class="p"> ก่อตั้งขึ้นเมื่อปี พ.ศ. 2534 โดยได้รับการยกฐานะจากวิทยาลัยครูมหาสารคาม ซึ่งมีประวัติยาวนานในการผลิตครูและบุคลากรทางการศึกษาของภาคตะวันออกเฉียงเหนือ มหาวิทยาลัยมีพันธกิจหลักในการผลิตบัณฑิตที่มีคุณภาพในสาขาต่าง ๆ และให้บริการทางวิชาการแก่ชุมชนทั้งในด้านการศึกษา การวิจัย และการพัฒนาชุมชน</p>
+                
+                <p class="p2">ในช่วงปีแรก ๆ มหาวิทยาลัยได้มุ่งเน้นการพัฒนาและ</p2>
+                <p class="p">สร้างสรรค์สาขาวิชาที่มีความสำคัญกับภาคอีสาน เช่น สาขาการศึกษา สาขาภาษาไทย และสาขาวิทยาศาสตร์ แต่ต่อมาได้ขยายสาขาวิชาไปในหลาย ๆ ด้าน ทั้งวิศวกรรมศาสตร์ สาธารณสุข และสาขาทางสังคมศาสตร์ มหาวิทยาลัยมีชื่อเสียงในด้านการพัฒนาทรัพยากรมนุษย์ในภูมิภาคนี้และมีบทบาทสำคัญในการขับเคลื่อนเศรษฐกิจและสังคมในภาคตะวันออกเฉียงเหนือ</p>
+                
+                <p class="p2">ปัจจุบันมหาวิทยาลัยมหาสารคามได้มีการพัฒนาไปสู่</p2>
+                <p class="p">มหาวิทยาลัยที่มีการเรียนการสอนระดับสูงและวิจัยที่มีคุณภาพ ได้รับการรับรองในหลายระดับ ทั้งในระดับประเทศและนานาชาติ มหาวิทยาลัยมุ่งมั่นที่จะเป็นศูนย์กลางการศึกษา</p>
+                    
+                <p class="p"><a href="https://www.msu.ac.th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+            </div>
+    
+            <!-- ส่วนที่ 2 -->
+            <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h3>หอพักใกล้มหาวิทยาลัยมหาสารคาม</h3>
+                <p class="p">
+            <b>1. หอพักม.มหาสารคาม</b>
+            หอพักนี้ตั้งอยู่ใกล้กับมหาวิทยาลัย มีห้องพักให้เลือกหลายประเภทพร้อมสิ่งอำนวยความสะดวกต่าง ๆ เช่น Wi-Fi และที่จอดรถ ปลอดภัยและสะดวกในการเดินทางไปมหาวิทยาลัย<a href="https://www.renthub.in.th/%E0%B8%81%E0%B8%B2%E0%B8%8B%E0%B8%B0%E0%B8%A5%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%9E%E0%B8%A5%E0%B8%AA">ข้อมูลเพิ่มเติม </a>
+
+            <br><b>2. หอพักมีนาซิตี้</b>
+            หอพักนี้ตั้งอยู่ใกล้กับประตูทางเข้ามหาวิทยาลัยมหาสารคาม มีบริการห้องพักที่มีขนาดกว้างขวางและสิ่งอำนวยความสะดวกครบครัน<a href="https://www.renthub.in.th/%E0%B8%9E%E0%B8%AA%E0%B8%B4%E0%B8%A9%E0%B8%90%E0%B9%8C-%E0%B9%81%E0%B8%A1%E0%B8%99%E0%B8%8A%E0%B8%B1%E0%B9%88%E0%B8%99-%E0%B8%82%E0%B8%AD%E0%B8%99%E0%B9%81%E0%B8%81%E0%B9%88%E0%B8%99-%E0%B8%9D%E0%B8%B1%E0%B9%88%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%94%E0%B8%B2%E0%B8%A5-%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%87-%E0%B8%A1%E0%B8%82">ข้อมูลเพิ่มเติม</a>
+
+            <br><b>3. หอพักธัญญาพร</b>
+            อยู่ใกล้กับมหาวิทยาลัยเช่นกัน มีบริการห้องพักทั้งแบบรายเดือนและรายปี พร้อมสิ่งอำนวยความสะดวก เช่น เครื่องปรับอากาศ น้ำอุ่นและอินเทอร์เน็ต​<a href="https://www.renthub.in.th/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B8%AB%E0%B8%8D%E0%B8%B4%E0%B8%87%E0%B8%9E%E0%B8%A3%E0%B8%B4%E0%B8%A1%E0%B9%82%E0%B8%A3%E0%B8%AA%E0%B9%80%E0%B8%A3%E0%B8%AA%E0%B8%8B%E0%B8%B4%E0%B9%80%E0%B8%94%E0%B8%99%E0%B8%8B%E0%B9%8C-%E0%B8%9D%E0%B8%B1%E0%B9%88%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%94%E0%B8%B2%E0%B8%A5-%E0%B8%A1-%E0%B8%82%E0%B8%AD%E0%B8%99%E0%B9%81%E0%B8%81%E0%B9%88%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+
+            <br><b>4. หอพักมิตรภาพ</b>
+            ตั้งอยู่ไม่ไกลจากมหาวิทยาลัย และเป็นที่นิยมของนักศึกษามหาวิทยาลัยมหาสารคามเพราะสะดวกและมีราคาที่เหมาะสม<a href="https://www.agoda.com/th-th/the-1-place-khonkaen/hotel/khon-kaen-th.html?cid=1844104">ข้อมูลเพิ่มเติม</a>
+
+            <br><b>5. หอพักธนากร </b>
+            มีความสะดวกสบายในการเดินทางไปมหาวิทยาลัย มีบริการเครื่องใช้ไฟฟ้าครบครันทั้งในห้องพักและพื้นที่ส่วนกลาง<br><a href="https://www.renthub.in.th/uk-apartment-%E0%B8%A2%E0%B8%B9%E0%B9%80%E0%B8%84-%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+            </p>
+            </div>
+            
+            <!-- ส่วนที่ 3 -->
+            <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h3>ผลงานของมหาวิทยาลัยมหาสารคาม</h3>
+                <p class="p">
+
+            <b>การวิจัยและนวัตกรรมในด้านการเกษตร:</b> มหาวิทยาลัยมหาสารคามมีผลงานวิจัยเด่นในด้านการเกษตร โดยเฉพาะในการพัฒนาเทคโนโลยีการเกษตรและการเพิ่มผลผลิตทางการเกษตรให้แก่เกษตรกรในภาคตะวันออกเฉียงเหนือ โดยมีการสร้างเครื่องมือและเทคโนโลยีที่ช่วยเกษตรกรในการทำการเกษตรที่ยั่งยืน
+            <br><b>โครงการวิจัยเกี่ยวกับการแพทย์และสุขภาพ:</b> อีกหนึ่งผลงานที่เด่นของมหาวิทยาลัยคือการวิจัยทางการแพทย์ เช่น การศึกษาด้านการรักษาโรคที่เกี่ยวข้องกับภาวะอ้วนและโรคเบาหวาน รวมถึงการพัฒนาวัคซีนและวิธีการรักษาที่มีความทันสมัย
+          
+            <br><b>โครงการส่งเสริมการศึกษาและสังคม: </b>มหาวิทยาลัยยังมุ่งเน้นในด้านการศึกษาที่ส่งเสริมความรู้ให้แก่ชุมชนและผู้ด้อยโอกาส ผ่านโครงการต่าง ๆ เช่น การพัฒนาหลักสูตรการศึกษาท้องถิ่นและการฝึกอบรมอาชีพสำหรับเยาวชนและบุคคลทั่วไป
+            <br><b>โครงการพัฒนาการศึกษาในระดับท้องถิ่น: </b>โดยมหาวิทยาลัยมุ่งมั่นในการพัฒนาหลักสูตรการศึกษาและสร้างโอกาสให้กับเยาวชนในพื้นที่ห่างไกล โดยเฉพาะในด้านการศึกษาชุมชนและการฝึกอบรมทักษะต่าง ๆ เช่น หลักสูตรวิชาชีพและการพัฒนาศักยภาพนักศึกษาผ่านโครงการต่าง ๆ ที่มีความหลากหลายและเน้นการใช้งานจริงเพื่อการประกอบอาชีพ
+        </p>
+            </div>
+        
+    </div>
+</div>
+    <div> 
+        <h2>
+            3.มหาวิทยาลัยอุบลราชธานี (UBU.) 
+        </h2>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
+        <!-- รูปภาพ -->
+        <img src="UBU.topic.png" alt="University" style="margin-bottom: 20px; width: 70%; height: auto; border: 4px solid #000000;">
+    
+        <!-- ข้อความที่จัดเรียง 3 ส่วนในบรรทัดเดียวกัน -->
+        <div style="display: flex; justify-content: space-between; width: 100%; gap: 20px; flex-wrap: wrap;">
+            <!-- ส่วนที่ 1 -->
+            <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h3>ประวัติของมหาวิทยาลัย</h3>
+                <p class="p2">มหาวิทยาลัยอุบลราชธานี(Ubon Ratchathani University) </p2>
+                <p class="p">ก่อตั้งขึ้นในปี พ.ศ. 2531 โดยมีวัตถุประสงค์เพื่อให้การศึกษาที่มีคุณภาพในภาคตะวันออกเฉียงเหนือ และเป็นสถาบันการศึกษาที่ช่วยพัฒนาและยกระดับคุณภาพชีวิตของประชาชนในพื้นที่อีสาน มหาวิทยาลัยนี้ตั้งอยู่ในจังหวัดอุบลราชธานี ซึ่งเป็นจังหวัดที่มีความสำคัญทางเศรษฐกิจและวัฒนธรรมในภาคอีสาน</p>
+                
+                <p class="p2">ในปัจจุบัน มหาวิทยาลัยอุบลราชธานีมีการพัฒนาอย่าง</p2>
+                <p class="p">ต่อเนื่องทั้งในด้านการศึกษา การวิจัย และการบริการสังคม โดยมีคณะและวิทยาลัยต่างๆ มากมาย รวมถึงคณะวิศวกรรมศาสตร์ คณะสังคมศาสตร์ คณะเกษตรศาสตร์ และคณะมนุษยศาสตร์ มหาวิทยาลัยนี้มุ่งเน้นในการผลิตบัณฑิตที่มีความรู้ความสามารถในการทำงานและมีทักษะที่ตอบสนองต่อความต้องการของตลาดแรงงานและชุมชน</p>
+                
+                <p class="p2">มหาวิทยาลัยอุบลราชธานียังให้ความสำคัญกับการพัฒนา</p2>
+                <p class="p">และสนับสนุนชุมชนในท้องถิ่น โดยผ่านโครงการวิจัยและบริการทางสังคมต่างๆ ที่ช่วยยกระดับคุณภาพชีวิตของประชาชนในพื้นที่ อุบลราชธานีจึงเป็นศูนย์กลางการศึกษาและการพัฒนาในภาคอีสานที่มุ่งสู่ความเป็นเลิศในทุกด้าน</p>
+                    
+                <p class="p"><a href="https://www.ubu.ac.th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+            </div>
+    
+            <!-- ส่วนที่ 2 -->
+            <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h3>หอพักใกล้มหาวิทยาลัยอุบลราชธานี</h3>
+                <p class="p">
+    <b>1. หอพักบ้านรักดี </b>
+    ตั้งอยู่ใกล้มหาวิทยาลัยอุบลราชธานี ใช้เวลาเดินทางเพียงไม่กี่นาที
+มีห้องพักให้เลือกหลายแบบ และมีบริการ Wi-Fi ฟรี<br><a href="https://www.renthub.in.th/%E0%B8%81%E0%B8%B2%E0%B8%8B%E0%B8%B0%E0%B8%A5%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%9E%E0%B8%A5%E0%B8%AA">ข้อมูลเพิ่มเติม </a>
+
+    <br><b>2. หอพักยูเอ็มพาร์ค (U-M Park)</b>
+    อยู่ในทำเลที่สะดวก ใกล้มหาวิทยาลัยอุบลราชธานี
+มีห้องพักหลายขนาด พร้อมสิ่งอำนวยความสะดวกครบครัน<a href="https://www.renthub.in.th/%E0%B8%9E%E0%B8%AA%E0%B8%B4%E0%B8%A9%E0%B8%90%E0%B9%8C-%E0%B9%81%E0%B8%A1%E0%B8%99%E0%B8%8A%E0%B8%B1%E0%B9%88%E0%B8%99-%E0%B8%82%E0%B8%AD%E0%B8%99%E0%B9%81%E0%B8%81%E0%B9%88%E0%B8%99-%E0%B8%9D%E0%B8%B1%E0%B9%88%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%94%E0%B8%B2%E0%B8%A5-%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%87-%E0%B8%A1%E0%B8%82">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>3. หอพักทิวานา</b>
+    หอพักสะอาดและปลอดภัย ใกล้มหาวิทยาลัยอุบลราชธานี
+    มีบริการที่จอดรถและอินเทอร์เน็ต Wi-Fi<br> <a href="https://www.renthub.in.th/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B8%AB%E0%B8%8D%E0%B8%B4%E0%B8%87%E0%B8%9E%E0%B8%A3%E0%B8%B4%E0%B8%A1%E0%B9%82%E0%B8%A3%E0%B8%AA%E0%B9%80%E0%B8%A3%E0%B8%AA%E0%B8%8B%E0%B8%B4%E0%B9%80%E0%B8%94%E0%B8%99%E0%B8%8B%E0%B9%8C-%E0%B8%9D%E0%B8%B1%E0%B9%88%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%94%E0%B8%B2%E0%B8%A5-%E0%B8%A1-%E0%B8%82%E0%B8%AD%E0%B8%99%E0%B9%81%E0%B8%81%E0%B9%88%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>4. หอพักซิตี้พาร์ค</b>
+    ตั้งอยู่ในทำเลใกล้มหาวิทยาลัยอุบลราชธานี เดินทางสะดวก
+มีระบบรักษาความปลอดภัยและห้องพักให้เลือกหลายประเภท<a href="https://www.agoda.com/th-th/the-1-place-khonkaen/hotel/khon-kaen-th.html?cid=1844104">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>5. หอพักบ้านสวนดอกไม้ </b>
+    ตั้งอยู่ในบริเวณที่เดินทางไปมหาวิทยาลัยได้ง่าย
+มีห้องพักกว้างขวางและมีบริการต่างๆ อย่างครบถ้วน<br><a href="https://www.renthub.in.th/uk-apartment-%E0%B8%A2%E0%B8%B9%E0%B9%80%E0%B8%84-%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+    </p>
+    </div>
+    
+            <!-- ส่วนที่ 3 -->
+            <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h3>ผลงานของมหาวิทยาลัยอุบลราชธานี</h3>
+                <p class="p">
+
+            <b>การวิจัยด้านเกษตรและสิ่งแวดล้อม:</b> มหาวิทยาลัยอุบลราชธานีมีผลงานวิจัยที่โดดเด่นในด้านการเกษตรและสิ่งแวดล้อม โดยเฉพาะการพัฒนาเทคโนโลยีการเกษตรที่ยั่งยืนและเป็นมิตรกับสิ่งแวดล้อม รวมถึงการวิจัยเพื่อเพิ่มผลผลิตในภาคเกษตรกรรม การใช้ประโยชน์จากพืชพันธุ์ท้องถิ่น และการจัดการทรัพยากรธรรมชาติอย่างยั่งยืน
+            <br><b>การพัฒนาระบบการศึกษาและการเรียนการสอน:</b> มหาวิทยาลัยอุบลราชธานีได้พัฒนาหลักสูตรการศึกษาและรูปแบบการเรียนการสอนที่ตอบโจทย์ต่อความต้องการของตลาดแรงงานและชุมชน โดยเน้นการเรียนการสอนที่เชื่อมโยงกับการพัฒนาท้องถิ่นและการสนับสนุนความสามารถในการประกอบอาชีพของนักศึกษา
+            <br><b>โครงการและการบริการชุมชน: </b> มหาวิทยาลัยอุบลราชธานีมุ่งเน้นการใช้ความรู้และทักษะของอาจารย์และนักศึกษาในการพัฒนาและยกระดับคุณภาพชีวิตของประชาชนในพื้นที่ผ่านโครงการบริการชุมชนต่างๆ เช่น โครงการพัฒนาอาชีพ โครงการส่งเสริมการเกษตรท้องถิ่น และโครงการด้านสุขภาพที่มุ่งช่วยเหลือชุมชนในพื้นที่ภาคอีสาน
+
+        </p>
+            </div>
+        </div>
+    </div>
+    
+    <div> 
+        <h2>
+            4.มหาวิทยาลัยราชภัฏเลย (LRU.) 
+        </h2>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
+        <!-- รูปภาพ -->
+        <img src="LRU.topic.png" alt="University" style="margin-bottom: 20px; width: 70%; height: auto; border: 4px solid #000000;">
+    
+        <!-- ข้อความที่จัดเรียง 3 ส่วนในบรรทัดเดียวกัน -->
+        <div style="display: flex; justify-content: space-between; width: 100%; gap: 20px; flex-wrap: wrap;">
+            <!-- ส่วนที่ 1 -->
+            <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h3>ประวัติของมหาวิทยาลัย</h3>
+                <p class="p2">มหาวิทยาลัยราชภัฏเลย (Loei Rajabhat University)</p2>
+                <p class="p">ก่อตั้งขึ้นในปี พ.ศ. 2547 โดยเดิมทีเป็นวิทยาลัยครูเลยที่ก่อตั้งเมื่อปี พ.ศ. 2515 เพื่อให้การศึกษาระดับอุดมศึกษาแก่ผู้ที่ต้องการศึกษาในด้านการศึกษาระดับพื้นฐาน และการพัฒนาการศึกษาในพื้นที่ภาคอีสาน หลังจากนั้นในปี พ.ศ. 2547 วิทยาลัยครูเลยได้รับการยกฐานะเป็นมหาวิทยาลัยราชภัฏเลยตามพระราชบัญญัติมหาวิทยาลัยราชภัฏ และได้รับการยอมรับในฐานะมหาวิทยาลัยที่มุ่งเน้นการพัฒนาการศึกษาและการวิจัยเพื่อรองรับการเติบโตของภูมิภาค</p>
+                
+                <p class="p2">มหาวิทยาลัยราชภัฏเลยตั้งอยู่ที่จังหวัดเลย ซึ่งเป็นจังหวัด</p2>
+                <p class="p">ในภาคตะวันออกเฉียงเหนือของประเทศไทย มหาวิทยาลัยนี้มีบทบาทสำคัญในการพัฒนาและยกระดับการศึกษาของประชาชนในภูมิภาค โดยเน้นการผลิตบัณฑิตที่มีคุณภาพและมีทักษะที่สามารถตอบโจทย์การพัฒนาในด้านต่างๆ โดยเฉพาะในสาขาวิชาการศึกษาที่เป็นพื้นฐานสำคัญในการพัฒนาท้องถิ่น</p>
+                
+                <p class="p"><a href="https://lru.ac.th/th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+            </div>
+    
+            <!-- ส่วนที่ 2 -->
+            <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h3>หอพักใกล้มหาวิทยาลัยขอนแก่น</h3>
+                <p class="p">
+            <b>1. หอพักบ้านครู </b>
+            ตั้งอยู่ใกล้มหาวิทยาลัยราชภัฏเลย ใช้เวลาเดินทางเพียงไม่กี่นาที
+        มีห้องพักให้เลือกหลายประเภท พร้อมสิ่งอำนวยความสะดวกครบครัน<br><a href="https://www.renthub.in.th/%E0%B8%81%E0%B8%B2%E0%B8%8B%E0%B8%B0%E0%B8%A5%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%9E%E0%B8%A5%E0%B8%AA">ข้อมูลเพิ่มเติม </a>
+
+            <br><b>2. หอพักลีลาวดี</b>
+            หอพักสะอาดและปลอดภัย ตั้งอยู่ใกล้กับมหาวิทยาลัย
+        มีบริการ Wi-Fi ฟรีและที่จอดรถ
+        <a href="https://www.renthub.in.th/%E0%B8%9E%E0%B8%AA%E0%B8%B4%E0%B8%A9%E0%B8%90%E0%B9%8C-%E0%B9%81%E0%B8%A1%E0%B8%99%E0%B8%8A%E0%B8%B1%E0%B9%88%E0%B8%99-%E0%B8%82%E0%B8%AD%E0%B8%99%E0%B9%81%E0%B8%81%E0%B9%88%E0%B8%99-%E0%B8%9D%E0%B8%B1%E0%B9%88%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%94%E0%B8%B2%E0%B8%A5-%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%87-%E0%B8%A1%E0%B8%82">ข้อมูลเพิ่มเติม</a>
+
+            <br><b>3. หอพักวิภาวดี</b>
+            อยู่ในทำเลที่เดินทางสะดวกไปมหาวิทยาลัยราชภัฏเลย
+        มีห้องพักกว้างขวาง พร้อมบริการอินเทอร์เน็ตและเครื่องใช้ไฟฟ้าครบ<a href="https://www.renthub.in.th/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B8%AB%E0%B8%8D%E0%B8%B4%E0%B8%87%E0%B8%9E%E0%B8%A3%E0%B8%B4%E0%B8%A1%E0%B9%82%E0%B8%A3%E0%B8%AA%E0%B9%80%E0%B8%A3%E0%B8%AA%E0%B8%8B%E0%B8%B4%E0%B9%80%E0%B8%94%E0%B8%99%E0%B8%8B%E0%B9%8C-%E0%B8%9D%E0%B8%B1%E0%B9%88%E0%B8%87%E0%B8%81%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%94%E0%B8%B2%E0%B8%A5-%E0%B8%A1-%E0%B8%82%E0%B8%AD%E0%B8%99%E0%B9%81%E0%B8%81%E0%B9%88%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+
+            <br><b>4. หอพักเอื้อมพร</b>
+            ตั้งอยู่ใกล้มหาวิทยาลัย มีระบบรักษาความปลอดภัย
+        มีห้องพักที่สะดวกสบายและราคาไม่แพง<a href="https://www.agoda.com/th-th/the-1-place-khonkaen/hotel/khon-kaen-th.html?cid=1844104">ข้อมูลเพิ่มเติม</a>
+
+            <br><b>5. หอพักทอฝัน </b>
+            หอพักตั้งอยู่ใกล้มหาวิทยาลัยราชภัฏเลย เดินทางสะดวก
+        มีบริการ Wi-Fi และสิ่งอำนวยความสะดวกครบครัน<br><a href="https://www.renthub.in.th/uk-apartment-%E0%B8%A2%E0%B8%B9%E0%B9%80%E0%B8%84-%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+            </p>
+            </div>
+    
+            <!-- ส่วนที่ 3 -->
+            <div style="flex: 1; min-width: 300px; max-width: 32%; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;">
+                <h3>ผลงานของมหาวิทยาลัยขอนแก่น</h3>
+                <p class="p">
+
+            <b>การวิจัยเพื่อพัฒนาชุมชนและท้องถิ่น:</b> มหาวิทยาลัยราชภัฏเลยมุ่งเน้นการวิจัยที่เป็นประโยชน์ต่อชุมชนในพื้นที่ โดยมีผลงานวิจัยที่เกี่ยวข้องกับการพัฒนาเกษตรกรรม การพัฒนาชุมชนและเศรษฐกิจท้องถิ่น เช่น การวิจัยด้านการเกษตรยั่งยืน การใช้เทคโนโลยีในการพัฒนาผลิตภัณฑ์ท้องถิ่น รวมทั้งการส่งเสริมการใช้ทรัพยากรธรรมชาติอย่างมีประสิทธิภาพ
+            <br><b>โครงการพัฒนาการศึกษา:</b>มหาวิทยาลัยราชภัฏเลยมีการพัฒนาโครงการเพื่อเสริมสร้างคุณภาพการศึกษาของนักศึกษาและการพัฒนาครู โดยมีการจัดโครงการต่างๆ เพื่อให้ความรู้และทักษะทางวิชาการที่เหมาะสมกับความต้องการของสังคม เช่น การพัฒนาหลักสูตรที่ตอบโจทย์การทำงานและการพัฒนาคุณภาพชีวิตของประชาชน
+            มีบุคลากรได้รับรางวัลด้านนวัตกรรม 
+            <br><b>การบริการสังคมและการพัฒนาชุมชน : </b> มหาวิทยาลัยราชภัฏเลยมีผลงานเด่นในการบริการสังคม โดยการใช้ความรู้จากการวิจัยและการศึกษาในการช่วยเหลือชุมชนในด้านต่างๆ เช่น การจัดโครงการส่งเสริมสุขภาพ พัฒนาอาชีพให้กับประชาชนในท้องถิ่น และการเสริมสร้างความเข้มแข็งให้กับองค์กรชุมชนในพื้นที่
+        </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <footer>
+        <div class="footer-section">
+            <h5>ข้อมูลเกี่ยวกับเว็บไซต์</h5>
+            <p>เว็ปไซต์สำหรับแนะนำมหาวิทยาลัยและแนะนำการสมัครเข้ามหาวิทยาลัย <br><br>หากสนใจหัวข้อใดสามารถกดเข้าเพื่อดูเนื้อหาข้อมูลที่คุณสนใจเพิ่มเติม</p>
+        </div>
+        <div class="footer-section">
+            <h5>แหล่งข้อมูลอ้างอิง</h5>
+            <p>แหล่งข้อมูลอ้างอิงของเนื้อหา<br><br> 
+                <a href="https://www.mytcas.com/" target="_blank">https://www.mytcas.com/</a><br><br>
+                <a href="https://www.opendurian.com/news/Uni_FoE/" target="_blank">https://www.opendurian.com/news/Uni_FoE/</a><br><br>
+                <a href="https://www.dek-d.com/tcas/" target="_blank">https://www.dek-d.com/tcas/</a></p>
+        </div>
+        <div class="footer-section">
+            <h5>ข้อมูลติดต่อ</h5>
+            <p>Thiwthat.chanthakarm@e-tech.ac.th <br><br>099-099-xxxx <br><br> IG: tthiwthat</p>
+        </div>
+    </footer>
+</body>
+<script>
+    
+    document.addEventListener("click", (event) => {
+    if (event.target.tagName !== "BUTTON") {
+    const shape = document.createElement("div");
+    shape.classList.add("shape");
+
+    const shapes = ["triangle", "hexagon","Diamond","star"];
+    shape.classList.add(shapes[Math.floor(Math.random() * shapes.length)]);
+
+    const shapeSize = 50; // 50x50 px
+    const x = event.pageX - shapeSize / 1;
+    const y = event.pageY - shapeSize / 1;
+    shape.style.left = `${x}px`;
+    shape.style.top = `${y}px`;
+
+    document.body.appendChild(shape);
+
+    // ลบรูปร่างเมื่ออนิเมชันเสร็จ
+    setTimeout(() => {
+      shape.remove();
+    }, 1500);
+    }
+    });
+       
+</script>

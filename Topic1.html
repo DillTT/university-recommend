@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My New Website</title>
+    <link rel="stylesheet" href="styles.css"> <!-- เชื่อมไฟล์ CSS -->
+    <style>
+    /* รีเซ็ต CSS สำหรับหน้าจอ */
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .falling-squares-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .square { /* สี่เหลี่ยม */
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #64c8c6; 
+            top: -50px; /* เริ่มจากด้านบน */
+            animation: fall linear infinite;
+        }        
+        @keyframes fall { /* การเคลื่อนไหวสี่เหลี่ยม */ 
+            0% {
+                transform: translateY(-50px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        .shape {
+            position: absolute;
+            transform: scale(0);
+            animation: grow-shrink 1.5s ease-out forwards;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 120px solid #ff8fa5;
+        }
+        .hexagon {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        .Diamond {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+        }
+        .star {
+            width: 150px;
+            height: 150px;
+            background-color: #ff8fa5;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        @keyframes grow-shrink {
+            0% {
+            transform: scale(0);
+            opacity: 1;
+            }
+            50% {
+            transform: scale(1.5);
+            }
+            100% {
+            transform: scale(0);
+            opacity: 0;
+            }
+        }
+
+         /* จัดการส่วนของ Body */
+         body {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* ความสูงเต็มหน้าจอ */
+            margin: 0;
+            justify-content: space-between; /* กำหนดให้เนื้อหาอยู่ด้านบน และ footer อยู่ด้านล่าง */
+            font-family: Arial, sans-serif;
+            color: #c9ceec;
+            background-color: #edd8db;
+        }
+
+        @keyframes slideInRight {
+            20% {
+            transform: translateX(100%); /* เริ่มจากนอกหน้าจอ */
+            background-color: #edd8db; /* เริ่มด้วยสีดำ */
+            opacity: 0; /* โปร่งใส */
+        }
+            80% {
+            background-color: #ff8fa5; /* เปลี่ยนเป็นสีฟ้าตอนกลาง */
+            opacity: 1; /* แสดงเต็ม */
+        }
+            100% {
+            transform: translateX(0); /* มาถึงตำแหน่งสุดท้าย */
+            background-color: #000000; /* คงสีฟ้าไว้ */
+            opacity: 1;
+        }}
+        h1{
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(255, 243, 243);
+            font-weight: 700;
+            font-size: 30px;
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 54px;
+            margin: 60px 0px 20px 50px;
+            text-align: left;
+        }
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 25px;
+            text-align: left;
+            margin-bottom: 10px;
+
+        }
+        h5 {
+            font-family: 'Montserrat', sans-serif;
+            color: #ff8fa5;
+            font-weight: 700;
+            font-size: 30px;
+            text-align: center;
+        }
+        .p {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 5px;
+            line-height: 1.8;
+            
+        }
+        .p2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 5px;
+            line-height: 1.8;
+            margin-left: 50px;
+        }
+        .description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 200;
+            color: rgb(0, 0, 0);
+            margin-top: 20px; /* เว้นระยะห่างระหว่างรูปกับข้อความ */
+            text-align: left;
+        }
+
+        
+        /* การตั้งค่าพื้นฐานสำหรับ header */
+        header {
+            display: flex;
+            justify-content: flex-start; /* ทำให้ข้อความชิดซ้าย */
+            align-items: center;
+            background-color: #0a0a0a;  /* สีพื้นหลังคล้ายกับในเว็บไซต์ */
+            padding: 30px;
+            height: 15vh;  /* ใช้ความสูงเต็มหน้าจอ */
+            z-index: 10;
+        }
+
+        /* ช่องแต่ละช่องใน header */
+        .header-item {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 50px;
+            position: relative;
+            color: #d1d1d1;
+            text-transform: uppercase;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        /* การจัดการลิงก์ */
+        .header-item a {
+            color: inherit;
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 15px;
+            transition: transform 0.3s, color 0.3s;
+            border-right: 3px solid white; /* เพิ่มเส้นใต้ข้อความ */
+            padding-right: 10px;
+        }
+
+        /* เอฟเฟกต์เมื่อเมาส์ชี้ไปที่ลิงก์ */
+        .header-item a:hover {
+            color: #ff70a6;  /* เปลี่ยนสีเมื่อ hover */
+            transform: translateY(-5px);  /* เคลื่อนที่ขึ้นเล็กน้อย */
+        }
+
+        /* เพิ่มเส้นใต้เมื่อ hover */
+        .header-item a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff70a6;  /* สีของเส้นใต้ */
+            transition: width 0.3s;
+        }
+
+        .header-item a:hover::after {
+            width: 100%;  /* เส้นใต้จะขยายเต็มความยาว */
+        }
+
+        /* การจัดการการเปลี่ยนสีเมื่อเมาส์ชี้ */
+        .header-item:hover {
+            color: #ff70a6;  /* เปลี่ยนสีข้อความ */
+        }
+
+        /* การเพิ่มการเคลื่อนไหว */
+        header {
+            animation: headerAnimation 1.5s ease-out forwards;
+        }
+        .header-left {
+            text-align: left;
+            color: white;
+            font-size: 15px;
+            margin-right: 180px ;
+        }
+
+        @keyframes headerAnimation {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .slideshow-container {
+            max-width: 1200px;
+            position: relative;
+            margin: 0; /* ลบ margin เพื่อให้ชิดซ้าย */
+            padding: 0; /* ลบ padding หากมี */
+            overflow: hidden;
+            border-radius: 10px;
+            display: flex;
+            justify-content: flex-start; /* ชิดซ้าย */
+            align-items: center; /* จัดแนวในแนวตั้ง */
+        }
+
+        .mySlides {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            flex: 1;
+        }
+
+        .active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        img {
+            width: 50%;
+            height: auto;
+            margin: 10px 0px 0px 20px;  /* ลด margin ด้านบนและด้านล่าง */
+            border: 4px solid #000000;
+            z-index: 10;
+        }
+
+        footer {
+            margin-top: auto; /* ทำให้ footer ดันตัวเองไปล่างสุด */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 360px;
+            background-color: #252525;
+            color: #fff;
+            width: 100%;
+            margin-top: 100px;
+            z-index: 10;
+        }           
+        .footer-section {
+            width: 33%;
+            text-align: center; 
+            border-right: 3px solid #fff; /* เส้นขวา */
+            height: 80%;
+        }.footer-section:last-child {
+            border-right: none; /* เอาเส้นขวาออก */
+        }
+        .footer-section h3 {
+            margin-top: 0;
+            color: #e87d93; /* สีหัวข้อ */
+            font-size: 28px;
+        }
+        .footer-section p {
+            margin: 40px 5px 5px 40px ;
+            text-align: left; /* ให้ข้อความชิดซ้าย */
+            font-size: 18px;
+        }
+        a {
+            color: #64c8c6;  /* เปลี่ยนสีลิงก์เป็นสีฟ้า */
+            text-decoration: none;  /* ไม่ให้มีเส้นใต้ */
+        }
+        a:hover {
+            color: #e87d93;  /* เปลี่ยนสีลิงก์เมื่อเมาส์ชี้ */
+            text-decoration: underline;  /* เพิ่มเส้นใต้เมื่อเมาส์ชี้ */
+        }
+    </style>
+</head>
+<body>
+        <div class="square" style="left: 55%; animation-duration: 2s; animation-delay: 1s;"></div>
+        <div class="square" style="left: 30%; animation-duration: 3s; animation-delay: 2s;"></div>
+        <div class="square" style="left: 70%; animation-duration: 2s; animation-delay: 1.5s;"></div>
+        <div class="falling-squares-container">
+        <!-- สี่เหลี่ยม -->
+        <div class="square" style="left: 10%; animation-duration: 1s; animation-delay: 0s;"></div>
+        <div class="square" style="left: 20%; animation-duration: 3s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 90%; animation-duration: 6s; animation-delay: 1.5s;"></div>
+        <div class="square" style="left: 15%; animation-duration: 2s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 80%; animation-duration: 1s; animation-delay: 0.5s;"></div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <h1>แนะนำมหาวิทยาลัยภาคเหนือ</h1>
+        </div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic2.html">มหาวิทยาลัย<br>ภาคกลาง</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic4.html">มหาวิทยาลัย<br>ภาคตะวันออกเฉียงเหนือ</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic5.html">มหาวิทยาลัย<br>ภาคใต้</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic3.html">แนะนำวิธีสมัครการ<br>เข้ามหาวิทยาลัย</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\project.html">หน้าหลัก</a></div>
+        
+    </header>
+        <div> 
+            <h2>
+                1.มหาวิทยาลัยเชียงใหม่ (CMU)
+            </h2>
+        </div>
+        
+        
+        <div style="display: flex; flex-direction: row; align-items: flex-start;">
+            <!-- รูป -->
+            <img src="CMU.Topic.png" alt="University" style="margin-right: 20px; width: 50%; height: auto; border: 4px solid #000000;">
+            
+            <!-- ข้อความที่อยู่ขวาของรูป -->
+            <div>
+                <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3>ประวัติของมหาวิทยาลัย</h3>
+            <p class="p2">
+            มหาวิทยาลัยเชียงใหม่ มหาวิทยาลัยแห่งแรกในภูมิภาคที่จัดขึ้นในไทยเมื่อวันที่ 18 มกราคม <br>
+            </p2>
+            <p class="p">
+                พ.ศ. 2507 โดยมีเป้าหมายเพื่อสนับสนุนการศึกษาขั้นสูงในภาคเหนือ และส่งเสริมการพัฒนาสังคม<br>และเศรษฐกิจของประเทศอย่างยั่งยืน
+
+                <p class="p2">มหาวิทยาลัยมีพื้นที่ตั้งอยู่บริเวณดอยสุเทพ จังหวัดเชียงใหม่ซึ่งเป็นพื้นที่ที่งดงามและสงบ</p>
+                <p class="p">เหมาะกับการศึกษาและการค้นคว้าวิจัย ปัจจุบันมหาวิทยาลัยประกอบด้วย 4 วิทยาเขต และคณะวิชาทั้งหมด 20 คณะ รวมถึงสถาบันวิจัยที่หลากหลาย</p>
+
+                <p class="p2">จุดเด่น ของมหาวิทยาลัยคือการอนุรักษ์วัฒนธรรมล้านนา ควบคู่ไปกับการพัฒนาเทคโนโลยี</p>
+                <p class="p"> สมัยใหม่ทั้งมุ่งเน้นการตอบสนองความต้องการของชุมชนผ่านการบริการวิชาการ</p>
+
+                <p class="p2">ปัจจุบัน มหาวิทยาลัยเชียงใหม่เป็นสถาบันที่มีชื่อเสียงด้านการวิจัยโดยเฉพาะในด้านการ  </p>
+                <p class="p">แพทย์พลังงาน และสิ่งแวดล้อม  มหาวิทยาลัยเชียงใหม่ยังมีระบบบริการนักศึกษาและศิษย์เก่าดีเยี่ยม ช่วยให้นักศึกษามีการสนับสนุนทั้งทางด้านวิชาการและการหางานหลังจากจบการศึกษา ซึ่งทำให้มหาวิทยาลัยเชียงใหม่ยังคงเป็นที่นิยมในฐานะหนึ่งในสถาบันการศึกษาชั้นนำของประเทศไทย
+                    <a href="https://www.cmu.ac.th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+                </div>
+            </div>
+        </div>
+                
+        <div style="display: flex; flex-direction: row; align-items: flex-start;">
+            <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+                <h3> ผลงานของมหาวิทยาลัยเชียงใหม่</h3>
+                <p class="p">
+                
+
+            มหาวิทยาลัยเชียงใหม่ (CMU) มีผลงานเด่นๆ ในหลายด้าน ซึ่งสามารถแบ่งได้เป็นหลายสาขา เช่น:<br>
+        <b>การเป็นศูนย์กลางความคิดทางประชาธิปไตย:</b> มหาวิทยาลัยธรรมศาสตร์ก่อตั้งขึ้นในปี พ.ศ. 2477 โดยมีจุดมุ่งหมายเพื่อส่งเสริมประชาธิปไตยและสร้างความรู้ความเข้าใจเกี่ยวกับรัฐศาสตร์ เศรษฐศาสตร์ และกฎหมาย ผลงานในด้านนี้ได้แก่การผลิตนักการเมืองและนักวิชาการที่มีบทบาทสำคัญในสังคมไทย รวมถึงการจัดกิจกรรมส่งเสริมความเป็นประชาธิปไตยและสิทธิมนุษยชน
+        
+        <br><b>การวิจัยทางการแพทย์และสาธารณสุข:</b>
+        มหาวิทยาลัยเชียงใหม่เป็นผู้นำด้านการวิจัยในสาขาการแพทย์และสาธารณสุข โดยเฉพาะในด้านการพัฒนาวัคซีนและการวิจัยโรคติดต่อ นอกจากนี้ยังมีวิจัยเกี่ยวกับการรักษาโรคที่เป็นปัญหาทางสาธารณสุขในภูมิภาคเอเชียตะวันออกเฉียงใต้ 
+
+        <br><b>พลังงานและสิ่งแวดล้อม:  </b>
+        CMU มีการวิจัยที่เน้นด้านการพัฒนาพลังงานสะอาดและการอนุรักษ์สิ่งแวดล้อม ตัวอย่างเช่น การวิจัยเพื่อพัฒนาพลังงานทดแทนจากชีวมวลและการจัดการน้ำอย่างยั่งยืน
+        <br><b>การอนุรักษ์และฟื้นฟูวัฒนธรรมล้านนา:</b> 
+        มหาวิทยาลัยเชียงใหม่ยังให้ความสำคัญกับ การอนุรักษ์วัฒนธรรมล้านนาและการศึกษาวัฒนธรรมท้องถิ่น โดยการพัฒนาโปรแกรมการศึกษาเน้นการอนุรักษ์ประเพณีและศิลปะท้องถิ่น รวมทั้งการพัฒนาสิ่งแวดล้อมและเศรษฐกิจท้องถิ่น
+            
+       </p>
+            </div>
+        <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3>หอพักใกล้มหาวิทยาลัยเชียงใหม่</h3>
+            <p class="p">
+            <b>1. ภูฟ้าเพลส (Phufa Place)</b>
+    หอพักที่มีห้องพักสะดวกสบายและหลากหลายแบบ ใกล้มหาวิทยาลัยเชียงใหม่<a href="https://www.phufaplace.com/">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>2. ศุภฤกษ์ คอร์ด 2 (Suphakris Court 2)</b>
+    มีห้องพักหลากหลายประเภท พร้อมสิ่งอำนวยความสะดวกที่ดี<a href="https://www.renthub.in.th/%E0%B8%A8%E0%B8%B8%E0%B8%A0%E0%B8%A4%E0%B8%81%E0%B8%A9%E0%B9%8C-%E0%B8%84%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%94-2-%E0%B9%83%E0%B8%81%E0%B8%A5%E0%B9%89-%E0%B8%A1%E0%B8%8A-%E0%B8%99%E0%B8%B4%E0%B8%A1%E0%B8%A1%E0%B8%B2%E0%B8%99-%E0%B8%AB%E0%B9%89%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%A1%E0%B8%A2%E0%B9%88%E0%B8%B2-%E0%B9%83%E0%B8%99%E0%B8%95%E0%B8%B1%E0%B8%A7%E0%B9%80%E0%B8%A1%E0%B8%B7%E0%B8%AD%E0%B8%87">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>3. ศุภฤกษ์ แมนชั่น 3 (Suphakris Mansion 3)</b>
+    หอพักที่มีพื้นที่กว้างขวางและสิ่งอำนวยความสะดวกครบครัน<a href="https://www.renthub.in.th/%E0%B8%A8%E0%B8%B8%E0%B8%A0%E0%B8%A4%E0%B8%81%E0%B8%A9%E0%B9%8C%E0%B9%81%E0%B8%A1%E0%B8%99%E0%B8%8A%E0%B8%B1%E0%B9%88%E0%B8%99-3-%E0%B9%83%E0%B8%81%E0%B8%A5%E0%B9%89%E0%B8%AB%E0%B8%99%E0%B9%89%E0%B8%B2-%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2-%E0%B9%80%E0%B8%8A%E0%B8%B5%E0%B8%A2%E0%B8%87%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>4. TUCK Me iN</b>
+    หอพักที่มีความสะดวกสบาย ราคาประหยัด และตั้งอยู่ใกล้มหาวิทยาลัยเชียงใหม่<a href="https://www.agoda.com/th-th/search?selectedproperty=2018796&city=7401&hid=2018796&site_id=1919460&tag=e2089b7e-be44-4f39-a3cf-78e62294299f&gad_source=1&device=c&network=g&adid=707202025830&rand=9815516929953768193&expid=&adpos=&aud=kwd-493125980537&gclid=Cj0KCQiAuou6BhDhARIsAIfgrn5RSHITIMDV3E2dXgWIy-hzU6nuJiUXXh-87qQ8ESjcdiEr0sWMWS0aAmT0EALw_wcB&checkIn=2024-12-03&checkOut=2024-12-04&adults=1&rooms=1&pslc=1&ds=ugFn8RF0jYgQHYxD">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>5. The 168 Gallery Residence & Hotel/</b>
+    ที่พักสมัยใหม่มีสิ่งอำนวยความสะดวกครบครัน ใกล้กับมหาวิทยาลัยเชียงใหม่<a href="https://www.booking.com/searchresults.th.html?aid=318615&label=English_Thailand_EN_TH_28546570825-SWzOv9yXeUYn3SnsZh5B6AS637942151756%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atidsa-209720617945%3Alp1012728%3Ali%3Adec%3Adm%3Aag28546570825%3Acmp340122385&gclid=Cj0KCQiAuou6BhDhARIsAIfgrn5h71BYu-Rhw1TrFYrVxbEm6IYkAmNExrkvvtvaX466C-XcWUg7l5caAnUdEALw_wcB&highlighted_hotels=5451863&redirected=1&city=-3247115&hlrd=no_dates&source=hotel&expand_sb=1&keep_landing=1&sid=9daf1e86e3df50ef4261244c74055b51">ข้อมูลเพิ่มเติม</a>
+            </p>
+        </div>
+    </div>
+
+    <div> 
+        <h2>
+            2.มหาวิทยาลัยราชภัฏเชียงใหม่ (CMRU)
+        </h2>
+    </div>
+
+
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- รูป -->
+        <img src="CMRUtopic.png" alt="University" style="margin-right: 20px; width: 50%; height: auto; border: 4px solid #000000;">
+        
+        <!-- ข้อความที่อยู่ขวาของรูป -->
+        <div>
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ประวัติของมหาวิทยาลัย</h3>
+        <p class="p2">
+            มหาวิทยาลัยราชภัฏเชียงใหม่ (CMRU) มีประวัติความเป็นมายาวนาน โดยเริ่มต้นในปี <br>
+        </p2>
+        <p class="p">
+            พ.ศ. 2467 ในฐานะโรงเรียนฝึกหัดครูกสิกรรมประจำมณฑลพายัพ ต่อมาในปี พ.ศ. 2503 ได้พัฒนาเป็นวิทยาลัยครูเชียงใหม่ และเปลี่ยนเป็นสถาบันราชภัฏเชียงใหม่ในปี พ.ศ. 2535 สุดท้ายได้รับการยกฐานะเป็นมหาวิทยาลัยราชภัฏเชียงใหม่ในปี พ.ศ. 2547​
+
+            <p class="p2">มหาวิทยาลัยมุ่งเน้นพัฒนาคุณภาพการศึกษาเพื่อท้องถิ่น พร้อมทั้งส่งเสริมศิลปวัฒนธรรมและ</p>
+            <p class="p">อนุรักษ์ภูมิปัญญาท้องถิ่น โดยมีค่านิยมหลัก CMRU ที่ประกอบด้วย Community, Morality, Royal <br>และ Unity จากนี้ยังเป็นศูนย์กลางการพัฒนาครูและการศึกษาระดับท้องถิ่นด้วยวิสัยทัศน์ที่ก้าวไกล</p>
+
+            <p class="p2">มหาวิทยาลัยมีวิทยาเขตหลักตั้งอยู่ที่อำเภอเมือง จังหวัดเชียงใหม่ พร้อมทั้งมีสภาพแวดล้อม</p>
+            <p class="p"> ที่สงบและเหมาะสำหรับการเรียนรู้ นอกจากนี้ยังมีศูนย์บริการวิชาการหลายแห่งที่ให้บริการแก่ชุมชนในภาคเหนือ โดยเน้นการบูรณาการการเรียนการสอนกับการพัฒนาท้องถิ่น​</p>
+
+            <p class="p2">เป็นหนึ่งในมหาวิทยาลัยชั้นนำที่มุ่งเน้นการพัฒนาการศึกษาเพื่อท้องถิ่น โดยมหาวิทยาลัยได้ </p>
+            <p class="p">รับการยกย่องในด้านการพัฒนาชุมชน การอนุรักษ์สิ่งแวดล้อม และการส่งเสริมเศรษฐกิจท้องถิ่นอย่างยั่งยืน นอกจากนี้ยังให้ความสำคัญกับการวิจัยเพื่อแก้ไขปัญหาท้องถิ่นและพัฒนาศักยภาพของนักศึกษาให้พร้อมเผชิญโลกการทำงานในยุคดิจิทัล
+                <a href="http://www.cmru.ac.th" target="_blank">อ่านข้อมูลเพิ่มเติม</a>
+            </p>
+            </div>
+
+
+            
+        </div>
+    </div>
+            
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3> ผลงานของมหาวิทยาลัยราชภัฏเชียงใหม่</h3>
+            <p class="p">
+                
+                มหาวิทยาลัยราชภัฏเชียงใหม่ (CMRU) มีผลงานเด่นในหลากหลายด้าน โดยเฉพาะในด้านการศึกษาและการวิจัย ตัวอย่างเช่น:
+
+                <br><b>การวิจัยทางการศึกษาและการพัฒนาชุมชน:</b> มหาวิทยาลัยนี้มีการส่งเสริมงานวิจัยที่มีผลต่อการพัฒนาท้องถิ่น เช่น งานวิจัยเกี่ยวกับการศึกษาและการพัฒนาทักษะอาชีพ ซึ่งช่วยยกระดับความสามารถของชุมชนในพื้นที่
+                
+                <br><b>การได้รับรางวัลในการประชุมวิชาการ:</b> มหาวิทยาลัยได้ยกย่องผลงานของนักวิจัยที่ได้รับรางวัลในการนำเสนองานวิจัยยอดเยี่ยมในการประชุมวิชาการระดับชาติและนานาชาติ เช่น "ราชภัฏวิจัย ครั้งที่ 7"​
+                วิกิพีเดีย สารานุกรมเสรี
+
+                <br><b>การสร้างสรรค์และพัฒนานวัตกรรม:</b> เช่น ศูนย์ปฏิบัติการ AiroTEC ที่สนับสนุนการวิจัยและการพัฒนาเทคโนโลยีที่ใช้ในภาคอุตสาหกรรมและการบริการ​
+                
+                หากต้องการข้อมูลเพิ่มเติมเกี่ยวกับผลงานต่างๆ ของมหาวิทยาลัยราชภัฏเชียงใหม่ สามารถเยี่ยมชมเว็บไซต์ของมหาวิทยาลัยได้ที่
+            </p>
+        </div>
+        
+    <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+    <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>หอพักใกล้มหาวิทยาลัยราชภัฏเชียงใหม่</h3>
+        <p class="p">
+        <b>1. เดอะ แกรนด์ วิภานันท์ เรสซิเดนซ์</b>
+        อยู่ใจกลางเมืองเชียงใหม่ มีบริการที่สะดวกสบายและการรักษาความปลอดภัยที่ดี เหมาะสำหรับผู้ที่ต้องการความสะดวกสบายในการพักอาศัย<a href="https://www.chiangmaiexpert.com/hotel-near-chiang-mai-ratchapat-university/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>2. แอนนา เพลส อพาร์ทเมนต์ </b>
+        ห่างจากมหาวิทยาลัยราชภัฏเชียงใหม่ประมาณ 650 เมตร มีสิ่งอำนวยความสะดวกครบครัน เช่น ทีวี ตู้เย็น เครื่องปรับอากาศ และที่นอนสปริง<a href="https://blog.renthub.in.th/RH243--renthub-%E0%B8%9E%E0%B8%B2%E0%B9%84%E0%B8%9B%E0%B8%94%E0%B8%B9-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%A1%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A0%E0%B8%B1%E0%B8%8F%E0%B9%80%E0%B8%8A%E0%B8%B5%E0%B8%A2%E0%B8%87%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>3. เวียงบัว แมนชั่น</b>
+        มีห้องพักสะอาดและบริการที่ดีเยี่ยม อยู่ใกล้ถนนใหญ่และมีการเดินทางสะดวก ราคาเริ่มต้นที่ 699 บาทต่อคืน​<a href="https://www.chiangmaiexpert.com/hotel-near-chiang-mai-ratchapat-university/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>4. V HAUS Residence @ เจ็ดยอด</b>
+        หอพักสไตล์โมเดิร์นที่มีสิ่งอำนวยความสะดวกครบครัน เช่น อินเทอร์เน็ตฟรี เครื่องปรับอากาศ และไมโครเวฟ รวมทั้งการรักษาความปลอดภัยด้วยกล้องวงจรปิด<a href="https://blog.renthub.in.th/RH243--renthub-%E0%B8%9E%E0%B8%B2%E0%B9%84%E0%B8%9B%E0%B8%94%E0%B8%B9-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%A1%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A0%E0%B8%B1%E0%B8%8F%E0%B9%80%E0%B8%8A%E0%B8%B5%E0%B8%A2%E0%B8%87%E0%B9%83%E0%B8%AB%E0%B8%A1%E0%B9%88">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>5. ภูริ พิมาน เชียงใหม่</b>
+        ที่พักสะอาดและมีความเงียบสงบ อยู่ไม่ไกลจากถนนใหญ่ พร้อมสิ่งอำนวยความสะดวกครบครัน<a href="https://www.agoda.com/th-th/search?selectedproperty=267293&city=7401&hid=267293&site_id=1919460&tag=04b8d0f9-fd72-4a3c-aadc-a5df94176dc6&gad_source=1&device=c&network=g&adid=707116469262&rand=9000994441171451958&expid=&adpos=&aud=kwd-683877398152&gclid=Cj0KCQiAgJa6BhCOARIsAMiL7V-DrluCEF-r9lTfmRCYBV2q3_Wtp4S0vhWjKhpv4JpUVsj5NvqAqRAaAiE8EALw_wcB&checkIn=2024-12-03&checkOut=2024-12-04&adults=1&rooms=1&pslc=1&ds=xa47LsxgqxKq2yw7">ข้อมูลเพิ่มเติม</a>
+        </p>
+        </div>
+    </div>
+
+    <div> 
+        <h2>
+            3.มหาวิทยาลัยแม่ฟ้าหลวง (MFU) 
+        </h2>
+    </div>
+
+
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- รูป -->
+        <img src="MFU topic.png" alt="University" style="margin-right: 20px; width: 50%; height: auto; border: 4px solid #000000;">
+        
+        <!-- ข้อความที่อยู่ขวาของรูป -->
+        <div>
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ประวัติของมหาวิทยาลัย</h3>
+        <p class="p2">
+            มหาวิทยาลัยแม่ฟ้าหลวง (MFU) ก่อตั้งขึ้นในปี พ.ศ. 2547 ตั้งอยู่ที่จังหวัดเชียงราย โดยได้รับ<br>
+        </p2>
+        <p class="p">
+            การสนับสนุนจากมูลนิธิแม่ฟ้าหลวง ซึ่งเป็นมูลนิธิที่ก่อตั้งโดยสมเด็จพระศรีนครินทราบรมราชชนนี เป็นสถาบันการศึกษาที่มุ่งเน้นการพัฒนาการศึกษาระดับสูงและวิจัยที่ตอบสนองต่อความต้องการของภูมิภาคและประเทศ
+
+            <p class="p2">มหาวิทยาลัยนี้เน้นการศึกษาในหลายสาขา โดยเฉพาะด้านเทคโนโลยี วิทยาศาสตร์ และการ</p>
+            <p class="p">พัฒนาที่ยั่งยืน รวมถึงการพัฒนาชุมชนและสังคม การศึกษาที่มหาวิทยาลัยแม่ฟ้าหลวงมีการผสมผสานความรู้จากทั้งในประเทศและต่างประเทศ โดยมีความร่วมมือกับสถาบันการศึกษาชั้นนำในต่างประเทศ มหาวิทยาลัยแม่ฟ้าหลวงยังมีการศึกษาระดับบัณฑิตศึกษาและหลักสูตรวิจัยที่สำคัญ
+            </p>
+
+            <p class="p2">มหาวิทยาลัยมีหลักสูตรที่หลากหลายทั้งระดับปริญญาตรีและบัณฑิตศึกษา รวมถึงการทำงาน</p>
+            <p class="p"> ร่วมกับภาคเอกชนและภาครัฐในการพัฒนาโครงการต่าง ๆ ที่มีผลกระทบต่อชุมชน นอกจากนี้ยังมีการสนับสนุนการพัฒนาผู้ประกอบการในพื้นที่และโครงการวิจัยที่มีความสำคัญต่อการพัฒนาเทคโนโลยีและการบริหารจัดการทรัพยากรธรรมชาติ
+                นอกจากนี้ มหาวิทยาลัยแม่ฟ้าหลวงยังมีการเปิดรับนักศึกษาจากต่างประเทศ 
+                <a href="https://www.mfu.ac.th/mfu-landing-page.html" target="_blank">อ่านข้อมูลเพิ่มเติม</a>​</p>
+            </div>
+                
+            
+        </div>
+    </div>
+            
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3> ผลงานของมหาวิทยาลัยแม่ฟ้าหลวง</h3>
+            <p class="p">
+                
+                มหาวิทยาลัยแม่ฟ้าหลวงมีผลงานเด่นในหลากหลายด้าน รวมทั้งการศึกษาและการวิจัยที่ได้รับการยอมรับในระดับประเทศและนานาชาติ ตัวอย่างผลงานที่น่าสนใจ ได้แก่:
+
+                <br><b>รางวัลจากงานวิจัย:</b>  นักศึกษาระดับบัณฑิตศึกษาได้รับรางวัลยอดเยี่ยมในงาน National Research Conference 2021 สำหรับผลงานด้านการวางแผนการสื่อสารทางการตลาดแบบครบวงจร
+                
+                <br><b>การมีส่วนร่วมในเวทีนานาชาติ:</b> นักศึกษาของมหาวิทยาลัยแม่ฟ้าหลวงได้รับโอกาสเป็นผู้แทนเยาวชนไทยในการประชุมสมัชชาสหประชาชาติ
+
+                <br><b>รางวัลด้านสิ่งแวดล้อม:</b> ศูนย์บรรณสารและสื่อการศึกษาของมหาวิทยาลัยได้รับรางวัลสำนักงานสีเขียวระดับดีเยี่ยม (G ทอง) ติดต่อกันเป็นปีที่สอง
+
+                <br><b>ผลงานด้านการบริหารจัดการชุมชน:</b> มหาวิทยาลัยร่วมกับเทศบาลแม่สายได้รับรางวัล PM's Digital Award 2023 จากผลงานระบบจัดการขยะอันตรายชุมชน​
+                
+                <br><b>การพัฒนาเทคโนโลยีและนวัตกรรมการเกษตร:</b>โดยเฉพาะในด้านการเกษตรและการปรับปรุงพันธุ์พืช ซึ่งมีผลต่อการเพิ่มผลผลิตและยกระดับคุณภาพชีวิตของเกษตรกรในภาคเหนือของไทย 
+            </p>
+        </div>
+    <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+    <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>หอพักใกล้มหาวิทยาลัยแม่ฟ้าหลวง</h3>
+        <p class="p">
+        <b>1. บ้านเพ็ญศรี</b>
+        ห่างจากมหาวิทยาลัยประมาณ 1.6 กม. มีราคาเริ่มต้นที่ 2,000-3,500 บาท/เดือน โดยมีสิ่งอำนวยความสะดวกเช่น อินเตอร์เน็ต Wifi และที่จอดรถ<a href="https://th.foursquare.com/v/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%81%E0%B8%9A%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%9E%E0%B8%8D%E0%B8%A8%E0%B8%A3/504eed58e4b0afdbdfd643e3">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>2. Skyline Plus  </b>
+        ห่างประมาณ 1.7 กม. ราคาเริ่มต้นที่ 7,500 บาท/เดือน มีระบบความปลอดภัยอย่างกล้องวงจรปิดและรปภ<a href="https://www.skyline-dorm.com/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>3. แสนฟ้าหลวง</b>
+        ตั้งอยู่ใกล้มหาวิทยาลัย มีราคา 3,000-3,500 บาท/เดือน สิ่งอำนวยความสะดวกครบครัน รวมถึง Wifi และที่จอดรถ​<a href="https://www.chiangmaiexpert.com/hotel-near-chiang-mai-ratchapat-university/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>4. Skyline Apartment</b>
+        ห่างจากมหาวิทยาลัย 1.6 กม. ราคาประมาณ 5,000-6,500 บาท/เดือน พร้อมอินเตอร์เน็ตและที่จอดรถ<a href="https://www.skyline-dorm.com/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>5. บ้านเวียงเงิน</b>
+        ห่างจากมหาวิทยาลัย 0.7 กม. ราคาประมาณ 3,700-4,000 บาท/เดือน<br><a href="https://www.renthub.in.th/%E0%B9%81%E0%B8%AA%E0%B8%99%E0%B8%9F%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87-%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%87-%E0%B8%A1-%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%9F%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87">ข้อมูลเพิ่มเติม</a>
+        </p>
+        </div>
+    </div>
+
+    
+    <div> 
+        <h2>
+            4.มหาวิทยาลัยราชภัฏเชียงราย (CRRU) 
+        </h2>
+    </div>
+
+
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- รูป -->
+        <img src="RCU.png" alt="University" style="margin-right: 20px; width: 50%; height: auto; border: 4px solid #000000;">
+        
+        <!-- ข้อความที่อยู่ขวาของรูป -->
+        <div>
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ประวัติของมหาวิทยาลัย</h3>
+        <p class="p2">
+            มหาวิทยาลัยราชภัฏเชียงราย (Chiang Rai Rajabhat University, CRRU) ก่อตั้งขึ้นในปี  <br>
+        </p2>
+        <p class="p">
+            พ.ศ. 2552 โดยมีจุดมุ่งหมายในการเป็นสถาบันอุดมศึกษาที่มุ่งเน้นการพัฒนาคุณภาพการศึกษาในภาคเหนือของประเทศไทย โดยเฉพาะในจังหวัดเชียงราย มหาวิทยาลัยนี้เป็นผลสืบเนื่องจากการเปลี่ยนแปลงในระบบการศึกษาของไทย ซึ่งมีเป้าหมายในการผลิตบัณฑิตที่มีคุณธรรมและสามารถทำงานในสังคมได้อย่างมีประสิทธิภาพ
+
+            <p class="p2">มหาวิทยาลัยราชภัฏเชียงรายมีสาขาวิชาหลักที่หลากหลาย โดยเน้นการศึกษาในสาขาที่ตอบ</p>
+            <p class="p">สนองต่อความต้องการของตลาดแรงงานทั้งในระดับท้องถิ่นและระดับชาติ เช่น สาขาวิชาการศึกษาที่เน้นการพัฒนาท้องถิ่น และสาขาวิชาธุรกิจที่มุ่งเน้นการเสริมสร้างทักษะด้านการบริหารและธุรกิจ โดยมีการเรียนการสอนในรูปแบบที่หลากหลายเพื่อให้นักศึกษาสามารถพัฒนาได้อย่างเต็มที่</p>
+
+            <p class="p2">มหาวิทยาลัยมีการพัฒนาความร่วมมือกับองค์กรภาครัฐและเอกชนทั้งในประเทศและต่าง</p>
+            <p class="p"> ประเทศเพื่อเสริมสร้างโอกาสทางการศึกษาและการวิจัยที่มีคุณภาพ โดยมีการจัดกิจกรรมและโครงการต่างๆ เพื่อเสริมสร้างทักษะของนักศึกษาและให้โอกาสในการฝึกงานและการศึกษาต่อในระดับที่สูงขึ้น
+                <a href="https://crru.ac.th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a>​</p>
+            </div>
+      
+        </div>
+    </div>
+            
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3> ผลงานของมหาวิทยาลัยราชภัฏเชียงราย</h3>
+            <p class="p">
+                
+                <b>การวิจัยเพื่อพัฒนาเศรษฐกิจท้องถิ่น:</b>  มหาวิทยาลัยได้ดำเนินโครงการวิจัยที่เกี่ยวข้องกับการใช้ทรัพยากรธรรมชาติและภูมิปัญญาท้องถิ่นอย่างยั่งยืน เช่น การผลิตสินค้าหัตถกรรมจากวัสดุท้องถิ่นเพื่อเพิ่มมูลค่า
+                <br><b>โครงการพัฒนาชุมชนผ่านการศึกษา: </b>  มหาวิทยาลัยได้สนับสนุนการพัฒนาเศรษฐกิจชุมชนโดยผ่านการเรียนรู้ทางการศึกษา เช่น การฝึกอบรมอาชีพต่างๆ ที่เกี่ยวกับเทคโนโลยีและการใช้ทรัพยากรอย่างยั่งยืน
+
+                <br><b>โครงการอนุรักษ์และพัฒนาสิ่งแวดล้อม: </b>การวิจัยและพัฒนาเกี่ยวกับการอนุรักษ์สิ่งแวดล้อมและทรัพยากรธรรมชาติในพื้นที่ เช่น โครงการปลูกต้นไม้เพื่อฟื้นฟูพื้นที่ที่ถูกทำลายจากการตัดไม้
+
+                <br><b>การพัฒนาเทคโนโลยีด้านเกษตรกรรม:</b> มหาวิทยาลัยได้ดำเนินงานในด้านการพัฒนาเทคโนโลยีใหม่ๆ ในการเกษตรเพื่อช่วยเพิ่มผลผลิตและลดการใช้สารเคมี​
+                
+                <br><b>โครงการวิจัยด้านการแพทย์: </b>มหาวิทยาลัยได้สนับสนุนการวิจัยเกี่ยวกับการใช้สมุนไพรท้องถิ่นในการรักษาโรคและการพัฒนาเทคโนโลยีทางการแพทย์ในพื้นที่ภาคเหนือ
+            </p>
+        </div>
+    <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+    <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>หอพักใกล้มหาวิทยาลัยราชภัฏเชียงราย</h3>
+        <p class="p">
+        <b>1. บ้านเพ็ญศรี</b>
+        ห่างจากมหาวิทยาลัยประมาณ 1.6 กม. มีราคาเริ่มต้นที่ 2,000-3,500 บาท/เดือน โดยมีสิ่งอำนวยความสะดวกเช่น อินเตอร์เน็ต Wifi และที่จอดรถ<a href="https://th.foursquare.com/v/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%81%E0%B8%9A%E0%B8%B2%E0%B8%99%E0%B9%80%E0%B8%9E%E0%B8%8D%E0%B8%A8%E0%B8%A3/504eed58e4b0afdbdfd643e3">เว็บไซต์ของหอพักบ้านเพ็ญศรี</a>
+
+        <br><b>2. Skyline Plus  </b>
+        ห่างประมาณ 1.7 กม. ราคาเริ่มต้นที่ 7,500 บาท/เดือน มีระบบความปลอดภัยอย่างกล้องวงจรปิดและรปภ<a href="https://www.skyline-dorm.com/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>3. แสนฟ้าหลวง</b>
+        ตั้งอยู่ใกล้มหาวิทยาลัย มีราคา 3,000-3,500 บาท/เดือน สิ่งอำนวยความสะดวกครบครัน รวมถึง Wifi และที่จอดรถ​<a href="https://www.chiangmaiexpert.com/hotel-near-chiang-mai-ratchapat-university/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>4. Skyline Apartment</b>
+        ห่างจากมหาวิทยาลัย 1.6 กม. ราคาประมาณ 5,000-6,500 บาท/เดือน พร้อมอินเตอร์เน็ตและที่จอดรถ<a href="https://www.skyline-dorm.com/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>5. บ้านเวียงเงิน</b>
+        ห่างจากมหาวิทยาลัย 0.7 กม. ราคาประมาณ 3,700-4,000 บาท/เดือน<br><a href="https://www.renthub.in.th/%E0%B9%81%E0%B8%AA%E0%B8%99%E0%B8%9F%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87-%E0%B8%82%E0%B9%89%E0%B8%B2%E0%B8%87-%E0%B8%A1-%E0%B9%81%E0%B8%A1%E0%B9%88%E0%B8%9F%E0%B9%89%E0%B8%B2%E0%B8%AB%E0%B8%A5%E0%B8%A7%E0%B8%87">ข้อมูลเพิ่มเติม</a>
+        </p>
+        </div>
+    </div>
+
+
+
+    <footer>
+        <div class="footer-section">
+            <h5>ข้อมูลเกี่ยวกับเว็บไซต์</h5>
+            <p>เว็ปไซต์สำหรับแนะนำมหาวิทยาลัยและแนะนำการสมัครเข้ามหาวิทยาลัย <br><br>หากสนใจหัวข้อใดสามารถกดเข้าเพื่อดูเนื้อหาข้อมูลที่คุณสนใจเพิ่มเติม</p>
+        </div>
+        <div class="footer-section">
+            <h5>แหล่งข้อมูลอ้างอิง</h5>
+            <p>แหล่งข้อมูลอ้างอิงของเนื้อหา<br><br> 
+                <a href="https://www.mytcas.com/" target="_blank">https://www.mytcas.com/</a><br><br>
+                <a href="https://www.opendurian.com/news/Uni_FoE/" target="_blank">https://www.opendurian.com/news/Uni_FoE/</a><br><br>
+                <a href="https://www.dek-d.com/tcas/" target="_blank">https://www.dek-d.com/tcas/</a></p>
+        </div>
+        <div class="footer-section">
+            <h5>ข้อมูลติดต่อ</h5>
+            <p>Thiwthat.chanthakarm@e-tech.ac.th <br><br>099-099-xxxx <br><br> IG: tthiwthat</p>
+        </div>
+    </footer>
+</body>
+<script>
+    
+    document.addEventListener("click", (event) => {
+    if (event.target.tagName !== "BUTTON") {
+    const shape = document.createElement("div");
+    shape.classList.add("shape");
+
+    const shapes = ["triangle", "hexagon","Diamond","star"];
+    shape.classList.add(shapes[Math.floor(Math.random() * shapes.length)]);
+
+    const shapeSize = 50; // 50x50 px
+    const x = event.pageX - shapeSize / 1;
+    const y = event.pageY - shapeSize / 1;
+    shape.style.left = `${x}px`;
+    shape.style.top = `${y}px`;
+
+    document.body.appendChild(shape);
+
+    // ลบรูปร่างเมื่ออนิเมชันเสร็จ
+    setTimeout(() => {
+      shape.remove();
+    }, 1500);
+    }
+    });
+       
+</script>

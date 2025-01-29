@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My New Website</title>
+    <link rel="stylesheet" href="styles.css"> <!-- เชื่อมไฟล์ CSS -->
+    <style>
+    /* รีเซ็ต CSS สำหรับหน้าจอ */
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .falling-squares-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .square { /* สี่เหลี่ยม */
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #64c8c6; 
+            top: -50px; /* เริ่มจากด้านบน */
+            animation: fall linear infinite;
+        }        
+        @keyframes fall { /* การเคลื่อนไหวสี่เหลี่ยม */ 
+            0% {
+                transform: translateY(-50px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        .shape {
+            position: absolute;
+            transform: scale(0);
+            animation: grow-shrink 1.5s ease-out forwards;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 120px solid #ff8fa5;
+        }
+        .hexagon {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        .Diamond {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+        }
+        .star {
+            width: 150px;
+            height: 150px;
+            background-color: #ff8fa5;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        @keyframes grow-shrink {
+            0% {
+            transform: scale(0);
+            opacity: 1;
+            }
+            50% {
+            transform: scale(1.5);
+            }
+            100% {
+            transform: scale(0);
+            opacity: 0;
+            }
+        }
+
+         /* จัดการส่วนของ Body */
+         body {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* ความสูงเต็มหน้าจอ */
+            margin: 0;
+            justify-content: space-between; /* กำหนดให้เนื้อหาอยู่ด้านบน และ footer อยู่ด้านล่าง */
+            font-family: Arial, sans-serif;
+            color: #c9ceec;
+            background-color: #edd8db;
+        }
+
+        @keyframes slideInRight {
+            20% {
+            transform: translateX(100%); /* เริ่มจากนอกหน้าจอ */
+            background-color: #edd8db; /* เริ่มด้วยสีดำ */
+            opacity: 0; /* โปร่งใส */
+        }
+            80% {
+            background-color: #ff8fa5; /* เปลี่ยนเป็นสีฟ้าตอนกลาง */
+            opacity: 1; /* แสดงเต็ม */
+        }
+            100% {
+            transform: translateX(0); /* มาถึงตำแหน่งสุดท้าย */
+            background-color: #000000; /* คงสีฟ้าไว้ */
+            opacity: 1;
+        }}
+        h1{
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(255, 243, 243);
+            font-weight: 700;
+            font-size: 30px;
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 54px;
+            margin: 60px 40px 20px 0px;
+            text-align: right;
+        }
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 25px;
+            text-align: left;
+            margin-bottom: 10px;
+            margin:0px 0px 5px 20px;
+
+        }
+        h5 {
+            font-family: 'Montserrat', sans-serif;
+            color: #ff8fa5;
+            font-weight: 700;
+            font-size: 30px;
+            text-align: center;
+            
+        }
+        .p {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin:0px 0px 5px 20px;
+            line-height: 1.8;
+        }
+        .p2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 5px;
+            line-height: 1.8;
+            margin:0px 0px 5px 70px;
+        }
+        .description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 200;
+            color: rgb(0, 0, 0);
+            margin-top: 20px; /* เว้นระยะห่างระหว่างรูปกับข้อความ */
+            text-align: left;
+        }
+
+        
+        /* การตั้งค่าพื้นฐานสำหรับ header */
+        header {
+            display: flex;
+            justify-content: flex-start; /* ทำให้ข้อความชิดซ้าย */
+            align-items: center;
+            background-color: #0a0a0a;  /* สีพื้นหลังคล้ายกับในเว็บไซต์ */
+            padding: 30px;
+            height: 15vh;  /* ใช้ความสูงเต็มหน้าจอ */
+            z-index: 10;
+        }
+
+        /* ช่องแต่ละช่องใน header */
+        .header-item {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 50px;
+            position: relative;
+            color: #d1d1d1;
+            text-transform: uppercase;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        /* การจัดการลิงก์ */
+        .header-item a {
+            color: inherit;
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 15px;
+            transition: transform 0.3s, color 0.3s;
+            border-right: 3px solid white; /* เพิ่มเส้นใต้ข้อความ */
+            padding-right: 10px;
+        }
+
+        /* เอฟเฟกต์เมื่อเมาส์ชี้ไปที่ลิงก์ */
+        .header-item a:hover {
+            color: #ff70a6;  /* เปลี่ยนสีเมื่อ hover */
+            transform: translateY(-5px);  /* เคลื่อนที่ขึ้นเล็กน้อย */
+        }
+
+        /* เพิ่มเส้นใต้เมื่อ hover */
+        .header-item a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff70a6;  /* สีของเส้นใต้ */
+            transition: width 0.3s;
+        }
+
+        .header-item a:hover::after {
+            width: 100%;  /* เส้นใต้จะขยายเต็มความยาว */
+        }
+
+        /* การจัดการการเปลี่ยนสีเมื่อเมาส์ชี้ */
+        .header-item:hover {
+            color: #ff70a6;  /* เปลี่ยนสีข้อความ */
+        }
+
+        /* การเพิ่มการเคลื่อนไหว */
+        header {
+            animation: headerAnimation 1.5s ease-out forwards;
+        }
+        .header-left {
+            text-align: left;
+            color: white;
+            font-size: 15px;
+            margin-right: 180px ;
+        }
+
+        @keyframes headerAnimation {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .slideshow-container {
+            max-width: 1200px;
+            position: relative;
+            margin: 0; /* ลบ margin เพื่อให้ชิดซ้าย */
+            padding: 0; /* ลบ padding หากมี */
+            overflow: hidden;
+            border-radius: 10px;
+            display: flex;
+            justify-content: flex-start; /* ชิดซ้าย */
+            align-items: center; /* จัดแนวในแนวตั้ง */
+        }
+
+        .mySlides {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            flex: 1;
+        }
+
+        .active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        img {
+            width: 50%;
+            height: auto;
+            margin: 10px 0px 0px 20px;  /* ลด margin ด้านบนและด้านล่าง */
+            border: 4px solid #000000;
+            z-index: 10;
+        }
+
+        footer {
+            margin-top: auto; /* ทำให้ footer ดันตัวเองไปล่างสุด */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 360px;
+            background-color: #252525;
+            color: #fff;
+            width: 100%;
+            margin-top: 100px;
+            z-index: 10;
+        }           
+        .footer-section {
+            width: 33%;
+            text-align: center; 
+            border-right: 3px solid #fff; /* เส้นขวา */
+            height: 80%;
+        }.footer-section:last-child {
+            border-right: none; /* เอาเส้นขวาออก */
+        }
+        .footer-section h3 {
+            margin-top: 0;
+            color: #e87d93; /* สีหัวข้อ */
+            font-size: 28px;
+        }
+        .footer-section p {
+            margin: 40px 5px 5px 40px ;
+            text-align: left; /* ให้ข้อความชิดซ้าย */
+            font-size: 18px;
+        }
+        a {
+            color: #64c8c6;  /* เปลี่ยนสีลิงก์เป็นสีฟ้า */
+            text-decoration: none;  /* ไม่ให้มีเส้นใต้ */
+        }
+        a:hover {
+            color: #e87d93;  /* เปลี่ยนสีลิงก์เมื่อเมาส์ชี้ */
+            text-decoration: underline;  /* เพิ่มเส้นใต้เมื่อเมาส์ชี้ */
+        }
+    </style>
+</head>
+<body>
+        <div class="square" style="left: 55%; animation-duration: 2s; animation-delay: 1s;"></div>
+        <div class="square" style="left: 30%; animation-duration: 3s; animation-delay: 2s;"></div>
+        <div class="square" style="left: 70%; animation-duration: 2s; animation-delay: 1.5s;"></div>
+        <div class="falling-squares-container">
+        <!-- สี่เหลี่ยม -->
+        <div class="square" style="left: 10%; animation-duration: 1s; animation-delay: 0s;"></div>
+        <div class="square" style="left: 20%; animation-duration: 3s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 90%; animation-duration: 6s; animation-delay: 1.5s;"></div>
+        <div class="square" style="left: 15%; animation-duration: 2s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 80%; animation-duration: 1s; animation-delay: 0.5s;"></div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <h1>แนะนำมหาวิทยาลัยภาคกลาง</h1>
+        </div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic1.html">มหาวิทยาลัย<br>ภาคเหนือ</a></div>       
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic4.html">มหาวิทยาลัย<br>ภาคตะวันออกเฉียงเหนือ</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic5.html">มหาวิทยาลัย<br>ภาคใต้</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic3.html">แนะนำวิธีสมัครการ<br>เข้ามหาวิทยาลัย</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\project.html">หน้าหลัก</a></div>
+        
+    </header>
+        <div> 
+            <h2>
+                1.จุฬาลงกรณ์มหาวิทยาลัย (CU) 
+            </h2>
+        </div>
+        
+        
+        <div style="display: flex; flex-direction: row-reverse; align-items: flex-start;">
+            <!-- รูป -->
+            <img src="CU.topic.png" alt="University" style="margin: 0px 20px 20px 20px; width: 50%; height: auto; border: 4px solid #000000;">
+            
+            <!-- ข้อความที่อยู่ซ้ายของรูป -->
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+              
+                    <h3>หอพักใกล้จุฬาลงกรณ์มหาวิทยาลัย</h3>
+        <p class="p">
+        <b>1. LKN Grand Apartments </b>
+        อยู่ใกล้ BTS ราชเทวี ห่างจากจุฬาลงกรณ์มหาวิทยาลัยประมาณ 2.1 กม. ราคาเริ่มต้นที่ 13,000-19,500 บาท/เดือน<br><a href="https://www.renthub.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81/%E0%B8%88%E0%B8%B8%E0%B8%AC%E0%B8%B2%E0%B8%A5%E0%B8%87%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2">ข้อมูลเพิ่มเติม </a>
+
+        <br><b>2. REEZQ Residence </b>
+        ตั้งอยู่ใกล้ถนนเพชรบุรี ห่างจากจุฬาลงกรณ์มหาวิทยาลัยประมาณ 2.5 กม. ราคาห้องเริ่มต้นที่ 7,000-9,000 บาท/เดือน<a href="https://www.renthub.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81/%E0%B8%88%E0%B8%B8%E0%B8%AC%E0%B8%B2%E0%B8%A5%E0%B8%87%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2/8000-%E0%B8%9A%E0%B8%B2%E0%B8%97%E0%B8%82%E0%B8%B6%E0%B9%89%E0%B8%99%E0%B9%84%E0%B8%9B">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>3. พลอย อพาร์ทเม้นท์</b>
+        ห่างจากจุฬาลงกรณ์มหาวิทยาลัยประมาณ 2.1 กม. ราคาเริ่มต้นที่ 6,500 บาท/เดือน​​<a href="https://www.renthub.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81/%E0%B8%88%E0%B8%B8%E0%B8%AC%E0%B8%B2%E0%B8%A5%E0%B8%87%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2/8000-%E0%B8%9A%E0%B8%B2%E0%B8%97%E0%B8%82%E0%B8%B6%E0%B9%89%E0%B8%99%E0%B9%84%E0%B8%9B">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>4. Siam Square One</b>
+        ใกล้ถนนพระราม 1 ห่างจากจุฬาลงกรณ์มหาวิทยาลัยประมาณ 1 กม. ราคาห้องเริ่มต้นที่ 8,000-12,000 บาท/เดือน<a href="https://www.renthub.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81/%E0%B8%88%E0%B8%B8%E0%B8%AC%E0%B8%B2%E0%B8%A5%E0%B8%87%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>5. The Room Ratchathewi </b>
+        อยู่ใกล้กับ BTS ราชเทวี ห่างจากจุฬาลงกรณ์มหาวิทยาลัยประมาณ 1.5 กม. ราคาเริ่มต้นที่ 9,000 บาท/เดือน<br><a href="https://www.renthub.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81/%E0%B8%88%E0%B8%B8%E0%B8%AC%E0%B8%B2%E0%B8%A5%E0%B8%87%E0%B8%81%E0%B8%A3%E0%B8%93%E0%B9%8C%E0%B8%A1%E0%B8%AB%E0%B8%B2%E0%B8%A7%E0%B8%B4%E0%B8%97%E0%B8%A2%E0%B8%B2%E0%B8%A5%E0%B8%B1%E0%B8%A2">ข้อมูลเพิ่มเติม</a>
+        </p>
+                    
+                
+            </div>
+        </div>
+              
+        <div style="display: flex; flex-direction: row; align-items: flex-start;">
+            <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+                <h3> ผลงานของจุฬาลงกรณ์มหาวิทยาลัย</h3>
+                <p class="p">
+                    
+                    จุฬาลงกรณ์มหาวิทยาลัยมีผลงานเด่นในหลากหลายด้าน โดยเฉพาะในด้านการวิจัยและการพัฒนาเทคโนโลยี ต่อไปนี้คือบางผลงานที่สำคัญเช่น:
+                    <br>
+
+            <b>การวิจัยเกี่ยวกับวัคซีน COVID-19:</b> จุฬาลงกรณ์มหาวิทยาลัยได้มีบทบาทสำคัญในการพัฒนาวัคซีนป้องกันโรค COVID-19 ที่ชื่อว่า "ChulaCov19" ซึ่งเป็นวัคซีนสัญชาติไทยที่พัฒนาโดยนักวิจัยจากคณะแพทยศาสตร์ของมหาวิทยาลัย และได้รับความสนใจจากทั้งในและต่างประเทศ
+            <br><b>การวิจัยและนวัตกรรมทางด้านสิ่งแวดล้อม:</b> จุฬามีการพัฒนาโครงการและงานวิจัยที่เกี่ยวข้องกับการรักษาสิ่งแวดล้อม เช่น การพัฒนาเทคโนโลยีการรีไซเคิลพลังงาน หรือการลดมลภาวะ ซึ่งได้รับการยอมรับทั้งในประเทศและระดับโลก
+            <br><b>การศึกษาและการพัฒนาด้านหุ่นยนต์และปัญญาประดิษฐ์ (AI): </b>  จุฬามีการลงทุนในการพัฒนาหุ่นยนต์และระบบ AI โดยเฉพาะในด้านการแพทย์และการดูแลสุขภาพ เช่น การพัฒนาเทคโนโลยีที่ช่วยในการวินิจฉัยโรค
+            <br><b>การวิจัยด้านพลังงานทดแทน: </b> จุฬาลงกรณ์มหาวิทยาลัยยังมีความโดดเด่นในการพัฒนาและวิจัยเกี่ยวกับพลังงานทดแทน เช่น โครงการที่ใช้พลังงานแสงอาทิตย์และพลังงานลมในการผลิตไฟฟ้า
+        </p>
+            </div>
+        <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3>ประวัติของมหาวิทยาลัย</h3>
+            <p class="p2">
+                จุฬาลงกรณ์มหาวิทยาลัย (Chulalongkorn University) ก่อตั้งขึ้นในปี พ.ศ. 2457 <br>
+            </p>
+            <p class="p">
+                โดยมีพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัวทรงพระกรุณาโปรดเกล้าฯ ให้จัดตั้งมหาวิทยาลัยแห่งแรกของประเทศไทยขึ้นในขณะนั้น โดยมีวัตถุประสงค์เพื่อให้การศึกษาในระดับสูงแก่ประชาชนและเพื่อสร้างบุคลากรที่มีความรู้ความสามารถในการพัฒนาประเทศ ปัจจุบันถือเป็นมหาวิทยาลัยที่มีชื่อเสียงระดับแนวหน้าในประเทศไทย และได้รับการยอมรับในระดับสากล
+    
+                <p class="p2">ตั้งแต่เริ่มต้นจนถึงปัจจุบัน จุฬาลงกรณ์มหาวิทยาลัยได้มีการพัฒนาและเติบโตอย่างรวดเร็ว</p>
+                <p class="p">โดยมีการเปิดสาขาวิชาหลายสาขาที่มีความหลากหลายทั้งในด้านวิทยาศาสตร์ สังคมศาสตร์ และมนุษยศาสตร์ รวมถึงการวิจัยและการพัฒนาเทคโนโลยีต่างๆ มหาวิทยาลัยจุฬาลงกรณ์มีการร่วมมือกับมหาวิทยาลัยระดับโลกและสถาบันการศึกษาต่างๆ เพื่อส่งเสริมการศึกษาและการวิจัยที่มีคุณภาพสูง
+                </p>
+    
+                <p class="p2">ในด้านการจัดอันดับมหาวิทยาลัย จุฬาลงกรณ์มหาวิทยาลัยมักจะได้รับการจัดอันดับสูง</p>
+                <p class="p"> ในระดับภูมิภาคและโลก เช่น ในการจัดอันดับ QS World University Rankings และ Times Higher Education มหาวิทยาลัยแห่งนี้มีชื่อเสียงในหลายๆ ด้านทั้งการศึกษา การวิจัย และความเป็นผู้นำในสาขาต่างๆ
+    
+                <a href="https://www.chula.ac.th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+        </div>
+    </div>
+
+    <div> 
+        <h2>
+            2.มหาวิทยาลัยมหิดล (MU) 
+        </h2>
+    </div>
+    
+    
+    <div style="display: flex; flex-direction: row-reverse; align-items: flex-start;">
+        <!-- รูป -->
+        <img src="MU.topic.png" alt="University" style="margin: 0px 20px 20px 20px; width: 50%; height: auto; border: 4px solid #000000;">
+        
+        <!-- ข้อความที่อยู่ซ้ายของรูป -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+          
+                <h3>หอพักใกล้มหาวิทยาลัยมหิดล</h3>
+    <p class="p">
+    <b>1. ASEAN House Dormitory </b>
+    ตั้งอยู่ใกล้กับมหาวิทยาลัยมหิดล ศาลายา ห้องพักมีเครื่องปรับอากาศ พร้อมสิ่งอำนวยความสะดวกเช่น ทีวี ตู้เย็น และบริการทำความสะอาด ค่าเช่าเริ่มต้นที่ 5,300 บาทต่อเดือน<br><a href="https://www.renthub.in.th/en/apartment/mahidol-university-salaya">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>2. Salaya Grand Apartment </b>
+    ตั้งอยู่ประมาณ 1 กม. จากมหาวิทยาลัยมหิดล ราคาค่าเช่าเริ่มต้นที่ 5,900 - 6,500 บาทต่อเดือน​<a href="https://www.renthub.in.th/en/apartment/mahidol-university-salaya">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>3. Heritage Apartment</b>
+    ห่างจากมหาวิทยาลัยมหิดลไม่ถึง 1 กม. ค่าเช่าเริ่มต้นที่ 5,000 บาทต่อเดือน​​<a href="https://www.renthub.in.th/en/apartment/mahidol-university-salaya">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>4. Romyen Apartment </b>
+    ห่างจากมหาวิทยาลัยมหิดลประมาณ 3 กม. ค่าเช่าอยู่ที่ 2,800 - 5,900 บาทต่อเดือน​<a href="https://www.renthub.in.th/en/apartment/mahidol-university-salaya">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>5. PJ Bed Story </b>
+    ตั้งอยู่ห่างจากมหาวิทยาลัยมหิดล 980 เมตร ค่าเช่าห้องเริ่มต้นที่ 5,500 บาทต่อเดือน​<br><a href="https://www.renthub.in.th/en/apartment/mahidol-university-salaya">ข้อมูลเพิ่มเติม</a>
+    </p>
+                
+
+        </div>
+    </div>
+          
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3> ผลงานของมหาวิทยาลัยมหิดล</h3>
+            <p class="p">
+                
+                มหาวิทยาลัยมหิดล (Mahidol University) มีผลงานเด่นในหลายด้านที่มีผลกระทบสำคัญต่อทั้งประเทศและสากล เช่น:
+                <br>
+
+        <b>การพัฒนาและวิจัยวัคซีน:</b>  มหาวิทยาลัยมหิดลมีบทบาทสำคัญในการวิจัยและพัฒนาวัคซีน รวมถึงการพัฒนาวัคซีน COVID-19 เพื่อควบคุมการแพร่ระบาดในประเทศไทยและในต่างประเทศ
+        
+        <br><b>การวิจัยด้านการแพทย์และสุขภาพ:</b>
+        ผลงานของมหาวิทยาลัยในด้านการแพทย์ ได้แก่ การพัฒนายาต้านมะเร็ง และการศึกษาเกี่ยวกับโรคใหม่ๆ เช่น โรคไข้เลือดออก และโรคติดเชื้ออื่นๆ 
+        <br><b>การพัฒนาหุ่นยนต์และปัญญาประดิษฐ์ (AI):  </b>
+        การศึกษาและวิจัยในด้านหุ่นยนต์และ AI เป็นอีกหนึ่งผลงานที่สำคัญของมหาวิทยาลัยมหิดล เช่น การพัฒนาเทคโนโลยีที่ใช้ในด้านการแพทย์
+        <br><b>โครงการวิจัยเพื่อการพัฒนาและอนุรักษ์สิ่งแวดล้อม:</b> 
+        มหาวิทยาลัยมีโครงการที่สำคัญในการวิจัยเกี่ยวกับพลังงานทดแทน การฟื้นฟูทรัพยากรธรรมชาติ และการอนุรักษ์สิ่งแวดล้อม
+        <br><b>การร่วมมือทางวิจัยกับมหาวิทยาลัยและองค์กรระดับโลก:</b>
+        มหาวิทยาลัยมหิดลมีการร่วมมือกับสถาบันวิจัยและมหาวิทยาลัยระดับโลก เช่น การวิจัยด้านสุขภาพและการพัฒนาทางการแพทย์ ซึ่งทำให้มหาวิทยาลัยมีส่วนสำคัญในการพัฒนาวงการวิทยาศาสตร์ระดับโลก
+        <br><b>การสร้างนวัตกรรมทางการศึกษา:</b>
+        มหาวิทยาลัยมหิดลมีการพัฒนาและส่งเสริมนวัตกรรมทางการศึกษา เช่น การจัดหลักสูตรที่เป็นสากลและการใช้เทคโนโลยีเพื่อการเรียนการสอน เช่น การเรียนออนไลน์ (e-learning) เพื่อเปิดโอกาสให้กับนักศึกษาทั่วโลก
+    </p>
+        </div>
+    <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+    <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ประวัติของมหาวิทยาลัย</h3>
+        <p class="p2">
+        มหาวิทยาลัยมหิดล (Mahidol University) ก่อตั้งขึ้นจากโรงพยาบาลศิริราชในปี พ.ศ. 2433 <br>
+        </p>
+        <p class="p">
+            โดยเริ่มต้นจากการจัดตั้งโรงพยาบาลศิริราช ซึ่งเป็นโรงพยาบาลที่มีบทบาทสำคัญในการพัฒนาการแพทย์และการศึกษาในประเทศไทย โดยพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัวทรงโปรดเกล้าฯ ให้จัดตั้งโรงเรียนแพทย์แห่งแรกของประเทศในช่วงนั้น โรงเรียนแพทย์นี้ได้รับการขยายและพัฒนาอย่างต่อเนื่องจนกลายเป็นมหาวิทยาลัยในปี 2502 ซึ่งเริ่มต้นด้วยคณะแพทยศาสตร์
+           
+            <p class="p2">มหาวิทยาลัยมหิดลมีการพัฒนาและขยายขอบเขตการศึกษาจากการแพทย์ไปยังหลากหลาย</p>
+            <p class="p">สาขาวิชา ทั้งในด้านวิทยาศาสตร์, สังคมศาสตร์, มนุษยศาสตร์, วิศวกรรมศาสตร์ และการศึกษาด้านเทคโนโลยี โดยมีเป้าหมายที่จะผลิตบุคลากรที่มีคุณภาพและสร้างสรรค์ผลงานที่สามารถนำไปพัฒนาประเทศและสังคมได้อย่างยั่งยืน มหาวิทยาลัยมหิดลยังมีบทบาทในการวิจัยและการพัฒนาเทคโนโลยีที่สามารถนำไปใช้ประโยชน์ในด้านต่างๆ เช่น การแพทย์, สิ่งแวดล้อม, และพลังงานทดแทน</p>
+
+            <p class="p2">ปัจจุบัน มหาวิทยาลัยมหิดลเป็นหนึ่งในมหาวิทยาลัยที่มีชื่อเสียงระดับโลก ซึ่งมีการพัฒนา</p>
+            <p class="p"> และปรับตัวให้เข้ากับเทคโนโลยีและการเปลี่ยนแปลงทางสังคมในยุคปัจจุบัน โดยยังคงมุ่งมั่นที่จะผลิตบัณฑิตที่มีคุณภาพและสามารถตอบโจทย์ความต้องการของสังคมโลกได้
+            <br><a href="https://mahidol.ac.th/th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+    </div>
+</div>
+
+    
+<div> 
+    <h2>
+        3.มหาวิทยาลัยธรรมศาสตร์ (TU.)
+    </h2>
+</div>
+
+
+    <div style="display: flex; flex-direction: row-reverse; align-items: flex-start;">
+        <!-- รูป -->
+        <img src="TU.topic.png" alt="University" style="margin: 0px 20px 20px 20px; width: 50%; height: auto; border: 4px solid #000000;">
+        
+        <!-- ข้อความที่อยู่ซ้ายของรูป -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        
+                <h3>หอพักใกล้มหาวิทยาลัยธรรมศาสตร์ </h3>
+    <p class="p">
+    <b>1. J-Park Residences </b>
+    หอพักทันสมัยพร้อมสิ่งอำนวยความสะดวกครบครัน เช่น สระว่ายน้ำ ฟิตเนส และที่จอดรถ บรรยากาศเงียบสงบเหมาะสำหรับการพักผ่อน พร้อมระบบรักษาความปลอดภัย 24 ชั่วโมง<br><a href="https://jparkthammasat.com/">ข้อมูลเพิ่มเติม </a>
+
+    <br><b>2. The Campus </b>
+    หอพักอยู่ติดถนนเชียงรากฝั่งเดียวกับมหาวิทยาลัย เดินทางสะดวก มีสิ่งอำนวยความสะดวกครบ เช่น ห้องพักตกแต่งเรียบง่าย เหมาะสำหรับนักศึกษา​<a href="https://gangtravel.com/89212">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>3. Hotel IYA</b>
+    รงแรมใกล้มหาวิทยาลัยธรรมศาสตร์ ตรงข้ามศูนย์รังสิต ห้องพักมีหลายรูปแบบ พร้อมเตียงใหญ่ ระเบียงกว้าง และที่จอดรถ เหมาะสำหรับการพัก​ราคาเริ่มต้น 959 บาท​​<a href="https://gangtravel.com/89212">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>4. The Idle Hotel and Residence </b>
+    หอพักบรรยากาศร่มรื่น มีความเป็นส่วนตัว พร้อมฟิตเนสและสระว่ายน้ำ ห้องพักมีทั้งสุพี​ร์สวีท เหมาะกับนักศึกษาที่ต้องการความสะดวกสบาย​<a href="https://gangtravel.com/89212">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>5. Stitch Box </b>
+    หอพักออกแบบให้มีสไตล์เหมือนตู้อำนวยความสะดวกมาตรฐาน ตั้งอยู่ในบริเวณที่เดินทางไปยังมหาวิทยาลัยได้ง่าย​<br><a href="https://gangtravel.com/89212">ข้อมูลเพิ่มเติม</a>
+    </p>
+                
+       
+        </div>
+    </div>
+        
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3> ผลงานของมหาวิทยาลัยธรรมศาสตร์</h3>
+            <p class="p">
+
+        <b>การเป็นศูนย์กลางความคิดทางประชาธิปไตย:</b> มหาวิทยาลัยธรรมศาสตร์ก่อตั้งขึ้นในปี พ.ศ. 2477 โดยมีจุดมุ่งหมายเพื่อส่งเสริมประชาธิปไตยและสร้างความรู้ความเข้าใจเกี่ยวกับรัฐศาสตร์ เศรษฐศาสตร์ และกฎหมาย ผลงานในด้านนี้ได้แก่การผลิตนักการเมืองและนักวิชาการที่มีบทบาทสำคัญในสังคมไทย รวมถึงการจัดกิจกรรมส่งเสริมความเป็นประชาธิปไตยและสิทธิมนุษยชนอย่างต่อเนื่อง
+        
+        <br><b>การสร้างงานวิจัยที่ส่งผลต่อสังคม:</b>
+        ธรรมศาสตร์เป็นมหาวิทยาลัยที่มีความเชี่ยวชาญในด้านกฎหมาย รัฐศาสตร์ และสังคมศาสตร์ โดยมีงานวิจัยที่ช่วยพัฒนานโยบายสาธารณะ และการจัดการปัญหาสังคมอย่างยั่งยืน ตัวอย่างงานวิจัยได้แก่การพัฒนานโยบายเพื่อสนับสนุนการเข้าถึงความยุติธรรมในกลุ่มเปราะบาง
+        <br><b>การสนับสนุนด้านเศรษฐกิจและผู้ประกอบการ:  </b>
+        มหาวิทยาลัยธรรมศาสตร์มีโครงการสนับสนุนผู้ประกอบการรายใหม่ (Startups) และการพัฒนานวัตกรรมที่ส่งผลต่อเศรษฐกิจไทย เช่น ศูนย์บ่มเพาะธุรกิจ (TUXSA) และโครงการพัฒนาสินค้าชุมชน
+        <br><b>การเป็นผู้นำด้านการศึกษาและวิชาการระดับนานาชาติ:</b> 
+        ธรรมศาสตร์มีหลักสูตรนานาชาติที่ได้รับการยอมรับในระดับโลก เช่น หลักสูตรนิติศาสตร์ เศรษฐศาสตร์ และบริหารธุรกิจ นอกจากนี้ยังมีความร่วมมือกับมหาวิทยาลัยชั้นนำทั่วโลกเพื่อพัฒนาความรู้และการแลกเปลี่ยนวัฒนธรรม
+       </p>
+        </div>
+    <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+    <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ประวัติของมหาวิทยาลัย</h3>
+        <p class="p2">
+            มหาวิทยาลัยธรรมศาสตร์ (Thammasat University) ก่อตั้งขึ้นเมื่อวันที่ 27 มิถุนายน  <br>
+        </p>
+        <p class="p">
+            พ.ศ. 2477 โดยนายปรีดี พนมยงค์ ภายใต้ชื่อเดิมว่า “มหาวิทยาลัยวิชาธรรมศาสตร์และการเมือง” มีจุดมุ่งหมายเพื่อส่งเสริมการศึกษาด้านกฎหมายและการเมือง พร้อมสนับสนุนการเปลี่ยนแปลงของประเทศสู่ประชาธิปไตย มหาวิทยาลัยมีบทบาทสำคัญในประวัติศาสตร์การเมืองและสังคมของไทย ตั้งแต่ช่วงการเปลี่ยนแปลงการปกครองในปี พ.ศ. 2475​
+            <p class="p2">ปัจจุบัน มหาวิทยาลัยธรรมศาสตร์เติบโตขึ้นอย่างมาก มีวิทยาเขตหลายแห่ง เช่น</p>
+            <p class="p">ท่าพระจันทร์ ศูนย์รังสิต และลำปาง โดยเปิดสอนสาขาวิชาที่หลากหลายตั้งแต่มนุษยศาสตร์ วิทยาศาสตร์ ไปจนถึงการแพทย์ และวิศวกรรมศาสตร์ ธรรมศาสตร์ยังมุ่งมั่นเป็นผู้นำด้านการวิจัยและนวัตกรรมเพื่อพัฒนาสังคมและประเทศชาติ</p>
+
+            <p class="p2">มหาวิทยาลัยยังคงยึดมั่นในปณิธานเดิมที่เน้นการให้การศึกษาที่มีคุณภาพ พร้อมสร้าง</p>
+            <p class="p"> บุคลากรที่มีความรับผิดชอบต่อสังคมและชุมชน โดยมีวิสัยทัศน์ที่จะพัฒนาผู้นำรุ่นใหม่ที่สามารถมีบทบาททั้งในระดับประเทศและระดับนานาชาติ การสนับสนุนทุนวิจัยจากแหล่งต่างประเทศยังเป็นอีกหนึ่งจุดเด่นที่ช่วยให้ธรรมศาสตร์เป็นที่ยอมรับในเวทีโลก
+            <br><a href="https://mahidol.ac.th/th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+    </div>
+    </div>
+
+       
+<div> 
+    <h2>
+        4.มหาวิทยาลัยเกษตรศาสตร์ (KU.)
+    </h2>
+</div>
+
+
+    <div style="display: flex; flex-direction: row-reverse; align-items: flex-start;">
+        <!-- รูป -->
+        <img src="KU.topic.png" alt="University" style="margin: 0px 20px 20px 20px; width: 50%; height: auto; border: 4px solid #000000;">
+        
+        <!-- ข้อความที่อยู่ซ้ายของรูป -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        
+                <h3>หอพักใกล้มหาวิทยาลัยเกษตรศาสตร์</h3>
+    <p class="p">
+    <b>1. At 44 Exclusive Apartment </b>
+    หอพักสไตล์กึ่งรีสอร์ท เน้นความสงบและความเป็นส่วนตัว พร้อมบริการฟิตเนสฟรี มินิมาร์ท และร้านซักอบรีด เหมาะสำหรับผู้ที่ต้องการความสงบ<br><a href="https://blog.renthub.in.th/1198--6-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B9%81%E0%B8%99%E0%B8%B0%E0%B8%99%E0%B8%B3%E0%B9%83%E0%B8%81%E0%B8%A5%E0%B9%89-%E0%B8%A1%E0%B9%80%E0%B8%81%E0%B8%A9%E0%B8%95%E0%B8%A3-%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%82%E0%B8%99">ข้อมูลเพิ่มเติม </a>
+
+    <br><b>2. Solario Ladprao Soi 1 </b>
+    ตั้งอยู่ใกล้สวนจตุจักรและ BTS จตุจักร มีสิ่งอำนวยความสะดวกครบครัน เช่น LED TV ตู้เย็น ไมโครเวฟ และเฟอร์นิเจอร์​<a href="https://blog.renthub.in.th/1198--6-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B9%81%E0%B8%99%E0%B8%B0%E0%B8%99%E0%B8%B3%E0%B9%83%E0%B8%81%E0%B8%A5%E0%B9%89-%E0%B8%A1%E0%B9%80%E0%B8%81%E0%B8%A9%E0%B8%95%E0%B8%A3-%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%82%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>3. The Star Ratchayothin</b>
+    หอพักใกล้เมเจอร์รัชโยธิน มีสิ่งอำนวยความสะดวกทั้งฟิตเนส สระว่ายน้ำ และระบบรักษาความปลอดภัย 24 ชั่วโมง อยู่ใกล้ห้างและสถานที่สำคัญ​<a href="https://www.renthub.in.th/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B9%83%E0%B8%81%E0%B8%A5%E0%B9%89%E0%B8%A1-%E0%B9%80%E0%B8%81%E0%B8%A9%E0%B8%95%E0%B8%A3%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%82%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>4. U-Center Kaset </b>
+    หอพักยอดนิยมที่ใกล้มหาวิทยาลัยที่สุด เดินทางสะดวก มีร้านค้าและบริการต่างๆ ครบครัน เหมาะกับนักศึกษาที่ต้องการประหยัดเวลาเดินทาง​<a href="https://blog.renthub.in.th/1198--6-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B9%81%E0%B8%99%E0%B8%B0%E0%B8%99%E0%B8%B3%E0%B9%83%E0%B8%81%E0%B8%A5%E0%B9%89-%E0%B8%A1%E0%B9%80%E0%B8%81%E0%B8%A9%E0%B8%95%E0%B8%A3-%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%82%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>5. Bongmai Apartment </b>
+    หอพักในย่านตลาดอมรพันธ์ ซึ่งอยู่ห่างจากมหาวิทยาลัยไม่มาก มีความสะดวกสบายและราคาย่อมเยา เหมาะสำหรับนักศึกษาที่ต้องการความคุ้มค่า​<br><a href="https://www.renthub.in.th/%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B9%83%E0%B8%81%E0%B8%A5%E0%B9%89%E0%B8%A1-%E0%B9%80%E0%B8%81%E0%B8%A9%E0%B8%95%E0%B8%A3%E0%B8%9A%E0%B8%B2%E0%B8%87%E0%B9%80%E0%B8%82%E0%B8%99">ข้อมูลเพิ่มเติม</a>
+    </p>
+                
+
+        </div>
+    </div>
+        
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3> ผลงานของมหาวิทยาลัยเกษตรศาสตร์</h3>
+            <p class="p">
+            มหาวิทยาลัยเกษตรศาสตร์ (KU) มีผลงานที่โดดเด่นหลายด้าน ซึ่งสะท้อนถึงความเป็นผู้นำในด้านการเกษตรและการพัฒนาประเทศไทย ตัวอย่างผลงานสำคัญ เช่น:
+
+        <br><b>พัฒนาพันธุ์ข้าวใหม่:</b>มหาวิทยาลัยเกษตรศาสตร์มีการวิจัยและพัฒนาพันธุ์ข้าวที่ให้ผลผลิตสูงและทนต่อโรค เช่น ข้าว กข43 ที่มีดัชนีน้ำตาลต่ำ เหมาะสำหรับผู้ป่วยเบาหวาน ช่วยยกระดับคุณภาพชีวิตและสนับสนุนเศรษฐกิจเกษตรกรไทย
+
+        <br><b>KU-Green Campus:</b>
+        โครงการนี้มุ่งเน้นการพัฒนามหาวิทยาลัยให้เป็นมิตรต่อสิ่งแวดล้อม ด้วยการจัดการพลังงานอย่างมีประสิทธิภาพและลดการปล่อยก๊าซเรือนกระจก ซึ่งได้รับการยอมรับในระดับสากล​
+        <br><b>การวิจัยด้านชีววิทยาและชีวโมเลกุล:  </b>
+        KU มีบทบาทสำคัญในงานวิจัยเกี่ยวกับเทคโนโลยีชีวภาพ เช่น การพัฒนาผลิตภัณฑ์ที่เป็นมิตรต่อสิ่งแวดล้อม และการค้นพบวิธีการใหม่ๆ เพื่อส่งเสริมความยั่งยืนในภาคอุตสาหกรรม
+        <br><b>ศูนย์วิจัยด้านประมงและสัตว์น้ำ:</b> 
+        ป็นผู้นำในงานวิจัยเพื่ออนุรักษ์และพัฒนาทรัพยากรสัตว์น้ำของไทย รวมถึงการผลิตอาหารสัตว์น้ำคุณภาพสูงเพื่อส่งเสริมอุตสาหกรรมประมง
+       </p>
+        </div>
+    <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+    <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ประวัติของมหาวิทยาลัย</h3>
+        <p class="p2">
+            มหาวิทยาลัยเกษตรศาสตร์ (Kasetsart University) ก่อตั้งขึ้นเมื่อวันที่ 2 กุมภาพันธ์   <br>
+        </p>
+        <p class="p">
+            พ.ศ. 2486 นับเป็นมหาวิทยาลัยแห่งแรกของประเทศไทยที่มุ่งเน้นการศึกษาและวิจัยด้านเกษตรศาสตร์โดยเฉพาะ จุดประสงค์หลักของการจัดตั้งมหาวิทยาลัยนี้คือเพื่อพัฒนาองค์ความรู้และบุคลากรที่มีความเชี่ยวชาญในด้านการเกษตร ซึ่งเป็นพื้นฐานสำคัญของเศรษฐกิจไทยในยุคนั้น รวมถึงการส่งเสริมการผลิตอาหารและการจัดการทรัพยากรธรรมชาติอย่างมีประสิทธิภาพ
+            <p class="p2">ในช่วงเวลาที่ผ่านมา มหาวิทยาลัยเกษตรศาสตร์ได้ขยายบทบาทและเพิ่มหลักสูตรใน</p>
+            <p class="p">หลายสาขา เช่น วิทยาศาสตร์ วิศวกรรมศาสตร์ เศรษฐศาสตร์ และมนุษยศาสตร์ เพื่อรองรับความต้องการของสังคมที่เปลี่ยนแปลง นอกจากนี้ มหาวิทยาลัยยังเป็นผู้นำด้านการวิจัยที่มีผลกระทบในระดับประเทศและระดับนานาชาติ โดยมีการเผยแพร่ผลงานวิจัยที่ได้รับการยอมรับอย่างกว้างขวาง</p>
+
+            <p class="p2">มหาวิทยาลัยเกษตรศาสตร์ยังมุ่งมั่นในการสร้างนวัตกรรมเพื่อแก้ไขปัญหาสำคัญในภาค</p>
+            <p class="p"> การเกษตรและสิ่งแวดล้อม เช่น การพัฒนาพันธุ์พืชที่ทนต่อสภาพอากาศ การจัดการน้ำอย่างยั่งยืน และการปรับปรุงคุณภาพดิน นอกจากนี้ ยังมีความร่วมมือกับองค์กรระดับโลกในการส่งเสริมการวิจัยและการเรียนการสอน
+            <br><a href="https://www.ku.ac.th/th" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+    </div>
+    </div>
+
+
+    <footer>
+        <div class="footer-section">
+            <h5>ข้อมูลเกี่ยวกับเว็บไซต์</h5>
+            <p>เว็ปไซต์สำหรับแนะนำมหาวิทยาลัยและแนะนำการสมัครเข้ามหาวิทยาลัย <br><br>หากสนใจหัวข้อใดสามารถกดเข้าเพื่อดูเนื้อหาข้อมูลที่คุณสนใจเพิ่มเติม</p>
+        </div>
+        <div class="footer-section">
+            <h5>แหล่งข้อมูลอ้างอิง</h5>
+            <p>แหล่งข้อมูลอ้างอิงของเนื้อหา<br><br> 
+                <a href="https://www.mytcas.com/" target="_blank">https://www.mytcas.com/</a><br><br>
+                <a href="https://www.opendurian.com/news/Uni_FoE/" target="_blank">https://www.opendurian.com/news/Uni_FoE/</a><br><br>
+                <a href="https://www.dek-d.com/tcas/" target="_blank">https://www.dek-d.com/tcas/</a></p>
+        </div>
+        <div class="footer-section">
+            <h5>ข้อมูลติดต่อ</h5>
+            <p>Thiwthat.chanthakarm@e-tech.ac.th <br><br>099-099-xxxx <br><br> IG: tthiwthat</p>
+        </div>
+    </footer>
+</body>
+<script>
+    
+    document.addEventListener("click", (event) => {
+    if (event.target.tagName !== "BUTTON") {
+    const shape = document.createElement("div");
+    shape.classList.add("shape");
+
+    const shapes = ["triangle", "hexagon","Diamond","star"];
+    shape.classList.add(shapes[Math.floor(Math.random() * shapes.length)]);
+
+    const shapeSize = 50; // 50x50 px
+    const x = event.pageX - shapeSize / 1;
+    const y = event.pageY - shapeSize / 1;
+    shape.style.left = `${x}px`;
+    shape.style.top = `${y}px`;
+
+    document.body.appendChild(shape);
+
+    // ลบรูปร่างเมื่ออนิเมชันเสร็จ
+    setTimeout(() => {
+      shape.remove();
+    }, 1500);
+    }
+    });
+       
+</script>

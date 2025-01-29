@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My New Website</title>
+    <link rel="stylesheet" href="styles.css"> <!-- เชื่อมไฟล์ CSS -->
+    <style>
+    /* รีเซ็ต CSS สำหรับหน้าจอ */
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .falling-squares-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .square { /* สี่เหลี่ยม */
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #64c8c6; 
+            top: -50px; /* เริ่มจากด้านบน */
+            animation: fall linear infinite;
+        }        
+        @keyframes fall { /* การเคลื่อนไหวสี่เหลี่ยม */ 
+            0% {
+                transform: translateY(-50px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        .shape {
+            position: absolute;
+            transform: scale(0);
+            animation: grow-shrink 1.5s ease-out forwards;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 120px solid #ff8fa5;
+        }
+        .hexagon {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        .Diamond {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+        }
+        .star {
+            width: 150px;
+            height: 150px;
+            background-color: #ff8fa5;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        @keyframes grow-shrink {
+            0% {
+            transform: scale(0);
+            opacity: 1;
+            }
+            50% {
+            transform: scale(1.5);
+            }
+            100% {
+            transform: scale(0);
+            opacity: 0;
+            }
+        }
+
+         /* จัดการส่วนของ Body */
+         body {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* ความสูงเต็มหน้าจอ */
+            margin: 0;
+            justify-content: space-between; /* กำหนดให้เนื้อหาอยู่ด้านบน และ footer อยู่ด้านล่าง */
+            font-family: Arial, sans-serif;
+            color: #c9ceec;
+            background-color: #edd8db;
+        }
+
+        @keyframes slideInRight {
+            20% {
+            transform: translateX(100%); /* เริ่มจากนอกหน้าจอ */
+            background-color: #edd8db; /* เริ่มด้วยสีดำ */
+            opacity: 0; /* โปร่งใส */
+        }
+            80% {
+            background-color: #ff8fa5; /* เปลี่ยนเป็นสีฟ้าตอนกลาง */
+            opacity: 1; /* แสดงเต็ม */
+        }
+            100% {
+            transform: translateX(0); /* มาถึงตำแหน่งสุดท้าย */
+            background-color: #000000; /* คงสีฟ้าไว้ */
+            opacity: 1;
+        }}
+        h1{
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(255, 243, 243);
+            font-weight: 700;
+            font-size: 30px;
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 54px;
+            margin: 60px 0px 20px 50px;
+            text-align: left;
+        }
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 25px;
+            text-align: left;
+            margin-bottom: 10px;
+
+        }
+        h5 {
+            font-family: 'Montserrat', sans-serif;
+            color: #ff8fa5;
+            font-weight: 700;
+            font-size: 30px;
+            text-align: center;
+        }
+        .p {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 5px;
+            line-height: 1.8;
+        }
+        .p2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 5px;
+            line-height: 1.8;
+            margin-left: 50px;
+        }
+        .description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 200;
+            color: rgb(0, 0, 0);
+            margin-top: 20px; /* เว้นระยะห่างระหว่างรูปกับข้อความ */
+            text-align: left;
+        }
+
+        
+        /* การตั้งค่าพื้นฐานสำหรับ header */
+        header {
+            display: flex;
+            justify-content: flex-start; /* ทำให้ข้อความชิดซ้าย */
+            align-items: center;
+            background-color: #0a0a0a;  /* สีพื้นหลังคล้ายกับในเว็บไซต์ */
+            padding: 30px;
+            height: 15vh;  /* ใช้ความสูงเต็มหน้าจอ */
+            z-index: 10;
+        }
+
+        /* ช่องแต่ละช่องใน header */
+        .header-item {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 50px;
+            position: relative;
+            color: #d1d1d1;
+            text-transform: uppercase;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        /* การจัดการลิงก์ */
+        .header-item a {
+            color: inherit;
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 15px;
+            transition: transform 0.3s, color 0.3s;
+            border-right: 3px solid white; /* เพิ่มเส้นใต้ข้อความ */
+            padding-right: 10px;
+        }
+
+        /* เอฟเฟกต์เมื่อเมาส์ชี้ไปที่ลิงก์ */
+        .header-item a:hover {
+            color: #ff70a6;  /* เปลี่ยนสีเมื่อ hover */
+            transform: translateY(-5px);  /* เคลื่อนที่ขึ้นเล็กน้อย */
+        }
+
+        /* เพิ่มเส้นใต้เมื่อ hover */
+        .header-item a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff70a6;  /* สีของเส้นใต้ */
+            transition: width 0.3s;
+        }
+
+        .header-item a:hover::after {
+            width: 100%;  /* เส้นใต้จะขยายเต็มความยาว */
+        }
+
+        /* การจัดการการเปลี่ยนสีเมื่อเมาส์ชี้ */
+        .header-item:hover {
+            color: #ff70a6;  /* เปลี่ยนสีข้อความ */
+        }
+
+        /* การเพิ่มการเคลื่อนไหว */
+        header {
+            animation: headerAnimation 1.5s ease-out forwards;
+        }
+        .header-left {
+            text-align: left;
+            color: white;
+            font-size: 15px;
+            margin-right: 180px ;
+        }
+
+        @keyframes headerAnimation {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .slideshow-container {
+            max-width: 1200px;
+            position: relative;
+            margin: 0; /* ลบ margin เพื่อให้ชิดซ้าย */
+            padding: 0; /* ลบ padding หากมี */
+            overflow: hidden;
+            border-radius: 10px;
+            display: flex;
+            justify-content: flex-start; /* ชิดซ้าย */
+            align-items: center; /* จัดแนวในแนวตั้ง */
+        }
+
+        .mySlides {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            flex: 1;
+        }
+
+        .active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        img {
+            width: 50%;
+            height: auto;
+            margin: 10px 0px 0px 20px;  /* ลด margin ด้านบนและด้านล่าง */
+            border: 4px solid #000000;
+            z-index: 10;
+        }
+
+        footer {
+            margin-top: auto; /* ทำให้ footer ดันตัวเองไปล่างสุด */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 360px;
+            background-color: #252525;
+            color: #fff;
+            width: 100%;
+            margin-top: 100px;
+            z-index: 10;
+        }           
+        .footer-section {
+            width: 33%;
+            text-align: center; 
+            border-right: 3px solid #fff; /* เส้นขวา */
+            height: 80%;
+        }.footer-section:last-child {
+            border-right: none; /* เอาเส้นขวาออก */
+        }
+        .footer-section h3 {
+            margin-top: 0;
+            color: #e87d93; /* สีหัวข้อ */
+            font-size: 28px;
+        }
+        .footer-section p {
+            margin: 40px 5px 5px 40px ;
+            text-align: left; /* ให้ข้อความชิดซ้าย */
+            font-size: 18px;
+        }
+        a {
+            color: #64c8c6;  /* เปลี่ยนสีลิงก์เป็นสีฟ้า */
+            text-decoration: none;  /* ไม่ให้มีเส้นใต้ */
+        }
+        a:hover {
+            color: #e87d93;  /* เปลี่ยนสีลิงก์เมื่อเมาส์ชี้ */
+            text-decoration: underline;  /* เพิ่มเส้นใต้เมื่อเมาส์ชี้ */
+        }
+    </style>
+</head>
+<body>
+        <div class="square" style="left: 55%; animation-duration: 2s; animation-delay: 1s;"></div>
+        <div class="square" style="left: 30%; animation-duration: 3s; animation-delay: 2s;"></div>
+        <div class="square" style="left: 70%; animation-duration: 2s; animation-delay: 1.5s;"></div>
+        <div class="falling-squares-container">
+        <!-- สี่เหลี่ยม -->
+        <div class="square" style="left: 10%; animation-duration: 1s; animation-delay: 0s;"></div>
+        <div class="square" style="left: 20%; animation-duration: 3s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 90%; animation-duration: 6s; animation-delay: 1.5s;"></div>
+        <div class="square" style="left: 15%; animation-duration: 2s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 80%; animation-duration: 1s; animation-delay: 0.5s;"></div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <h1>แนะนำมหาวิทยาลัยภาคใต้</h1>
+        </div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic1.html">มหาวิทยาลัย<br>ภาคเหนือ</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic2.html">มหาวิทยาลัย<br>ภาคกลาง</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic4.html">มหาวิทยาลัย<br>ภาคตะวันออกเฉียงเหนือ</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic3.html">แนะนำวิธีสมัครการ<br>เข้ามหาวิทยาลัย</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\project.html">หน้าหลัก</a></div>
+        
+    </header>
+        <div> 
+            <h2>
+                1.มหาวิทยาลัยสงขลานครินทร์  (PSU)
+            </h2>
+        </div>
+        
+        
+        <div style="display: flex; flex-direction: row; align-items: flex-start;">
+            <!-- รูป -->
+            <img src="PSU.topic.png" alt="University" style="margin-right: 20px; width: 50%; height: auto; border: 4px solid #000000;">
+            
+            <!-- ข้อความที่อยู่ขวาของรูป -->
+            <div>
+                <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3>ประวัติของมหาวิทยาลัย</h3>
+            <p class="p2">
+                มหาวิทยาลัยสงขลานครินทร์ (PSU) ก่อตั้งขึ้นในปี พ.ศ. 2510 โดยมีเป้าหมายเพื่อสนับสนุน<br>
+            </p2>
+            <p class="p">
+                การพัฒนาภาคใต้ของประเทศไทย ทั้งในด้านการศึกษา การวิจัย และการพัฒนาสังคม เริ่มต้นที่วิทยาเขตปัตตานีและขยายไปยังวิทยาเขตอื่น ๆ รวม 5 จังหวัด ได้แก่ สงขลา ปัตตานี ภูเก็ต สุราษฎร์ธานี และตรัง
+
+                <p class="p2">ชื่อของมหาวิทยาลัยได้รับแรงบันดาลใจจากสมเด็จพระราชบิดา เจ้าฟ้าสงขลานครินทรฯ</p>
+                <p class="p">ซึ่งเป็น "พระบิดาแห่งการแพทย์ไทยสมัยใหม่" โดยมุ่งเน้นการศึกษาในหลากหลายสาขา ตั้งแต่ด้านวิทยาศาสตร์ เทคโนโลยี ไปจนถึงมนุษยศาสตร์และสังคมศาสตร์ เพื่อเตรียมบัณฑิตให้พร้อมสำหรับการพัฒนาประเทศในทุกมิติ</p>
+
+                <p class="p2">มหาวิทยาลัยมีการจัดตั้งคณะวิชาที่ตอบสนองความต้องการของท้องถิ่นและประเทศชาติ</p>
+                <p class="p"> และได้พัฒนาจนเป็นศูนย์กลางการวิจัยที่สำคัญในภูมิภาค ผลงานวิจัยและบทบาทการบริการวิชาการของมหาวิทยาลัยยังช่วยยกระดับเศรษฐกิจและสังคมในระดับท้องถิ่นและระดับประเทศ ปัจจุบันเปิดสอนกว่า 300 สาขาวิชาในระดับปริญญาตรีถึงปริญญาเอก</p>
+
+                <p class="p"><a href="https://www.psu.ac.th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+                </div> 
+            
+            </div>
+        </div>
+                
+        <div style="display: flex; flex-direction: row; align-items: flex-start;">
+            <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+                <h3>หอพักใกล้มหาวิทยาลัยสงขลานครินทร์</h3>
+            <p class="p">
+            <b>1. มานาเรสซิเด้นซ์ (Mana Residence)</b>
+            หอพักสไตล์อพาร์ตเมนต์ ราคาประหยัด เริ่มต้นที่ประมาณ 540 บาท/คืน อยู่ใกล้มหาวิทยาลัย สามารถเดินทางได้สะดวก ใกล้ร้านอาหารและร้านสะดวกซื้อ เหมาะสำหรับทั้งพักรายวันและรายเดือน<a href="https://khunnaiver.blogspot.com/2018/06/Hat-yai-hotels-near-songklanakarin-university.html">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>2. Goodnight Poshtel</b>
+    ที่พักสะอาดและตกแต่งอย่างทันสมัย พร้อมบริการ Netflix ฟรี ตั้งอยู่ในตัวเมืองหาดใหญ่ ห่างจากมหาวิทยาลัยไม่ไกลมาก ราคาเริ่มต้นที่ 1,400 บาท/คืน<a href="https://www.booking.com/landmark/th/prince-of-songkhla-university.th.html">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>3. PS 23 Residence</b>
+    ที่พักเงียบสงบและสะอาด อยู่ห่างจากศูนย์ประชุมนานาชาติ ม.อ. เพียง 6.1 กม. ราคาเริ่มต้นที่ 850 บาท/คืน​<a href="https://www.booking.com/landmark/th/prince-of-songkhla-university.th.html">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>4. Indigo Hotel Hatyai</b>
+    โรงแรมที่มีบริการครบครัน ตั้งอยู่ในย่านบ้านคอหงส์ ห่างจากเซ็นทรัลเฟสติวัล หาดใหญ่ประมาณ 3.5 กม. และใกล้ ม.อ. ราคาเริ่มต้นที่ 1,161 บาท/คืน<a href="https://www.booking.com/landmark/th/prince-of-songkhla-university.th.html">ข้อมูลเพิ่มเติม</a>
+
+    <br><b>5. The Rings Hotel</b>
+    ตั้งอยู่ใกล้มหาวิทยาลัยสงขลานครินทร์ในหาดใหญ่ เป็นโรงแรมที่มีบริการห้องพักมาตรฐาน ราคาไม่แพง เหมาะสำหรับนักศึกษาและผู้มาติดต่อในพื้นที่<a href="https://khunnaiver.blogspot.com/2018/06/Hat-yai-hotels-near-songklanakarin-university.html">ข้อมูลเพิ่มเติม</a>
+            </p>
+        </div>
+                
+        <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3>ผลงานของมหาวิทยาลัยสงขลานครินทร์ </h3>
+                <p class="p">
+                    
+                    ผลงานเด่นของมหาวิทยาลัยสงขลานครินทร์ (ม.อ.) มีดังนี้:<br>
+
+            <b>การวิจัยทางการแพทย์และวิทยาศาสตร์สุขภาพ :</b> ม.อ. มีผลงานวิจัยโดดเด่นในด้านการแพทย์ เช่น การพัฒนาวัคซีนและนวัตกรรมทางการแพทย์ รวมถึงการตีพิมพ์งานวิจัยระดับสากลในฐานข้อมูล Web of Science ซึ่งสะท้อนถึงความเป็นผู้นำในด้านวิทยาศาสตร์สุขภาพ
+
+            <br><b>รางวัลและนวัตกรรมเพื่อมนุษยชาติ :</b> มหาวิทยาลัยได้รับรางวัลที่เกี่ยวข้องกับงานวิจัยที่สร้างประโยชน์ต่อชุมชนและมนุษยชาติ เช่น การพัฒนาเทคโนโลยีเพื่อสนับสนุนการเกษตรและอุตสาหกรรมในภูมิภาค
+
+            <br><b>ศูนย์วิจัยและพัฒนานวัตกรรมเพื่อเศรษฐกิจ   :</b>  ม.อ. เน้นพัฒนานวัตกรรมเพื่อขับเคลื่อนเศรษฐกิจ เช่น การวิจัยด้านพลังงานทางเลือกและการพัฒนาผลิตภัณฑ์จากทรัพยากรธรรมชาติในพื้นที่
+
+            <br><b>การจัดอันดับมหาวิทยาลัย   :</b> ม.อ. ได้รับการจัดอันดับในระดับประเทศและนานาชาติในด้านความเป็นเลิศทางวิชาการและการวิจัย เช่น QS World University Rankings ซึ่งเน้นย้ำถึงมาตรฐานการศึกษาที่สูงและการมีส่วนร่วมในระดับโลก
+            </p>
+            </div>
+    </div>
+
+    
+    <div> 
+        <h2>
+            2.มหาวิทยาลัยราชภัฏสงขลา (SKRU)
+        </h2>
+    </div>
+
+       
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- รูป -->
+        <img src="SKRU.topic.png" alt="University" style="margin-right: 20px; width: 50%; height: auto; border: 4px solid #000000;">
+        
+        <!-- ข้อความที่อยู่ขวาของรูป -->
+        <div>
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ประวัติของมหาวิทยาลัย</h3>
+        <p class="p2">
+            มหาวิทยาลัยราชภัฏสงขลา (Songkhla Rajabhat University: SKRU) ก่อตั้งขึ้นโดยมีเป้าหมาย<br>
+        </p2>
+        <p class="p">
+            พัฒนาการศึกษาในภาคใต้ของประเทศไทย โดยเฉพาะในจังหวัดสงขลา เดิมมหาวิทยาลัยนี้เริ่มต้นจากโรงเรียนฝึกหัดครูในปี พ.ศ. 2475 และได้รับการพัฒนาเป็นวิทยาลัยครูสงขลาในปี พ.ศ. 2500 เพื่อส่งเสริมการศึกษาและพัฒนาความรู้ด้านการสอน
+
+            <p class="p2">ต่อมาในปี พ.ศ. 2535 วิทยาลัยครูสงขลาได้เปลี่ยนสถานะเป็นสถาบันราชภัฏสงขลา และในปี</p>
+            <p class="p"> พ.ศ. 2547 ได้รับการยกฐานะเป็นมหาวิทยาลัยราชภัฏสงขลา เพื่อให้มีบทบาทกว้างขึ้นในด้านการศึกษาและการวิจัย โดยครอบคลุมหลากหลายสาขาวิชา เช่น มนุษยศาสตร์ วิทยาศาสตร์ เทคโนโลยี </p>
+
+            <p class="p2">มหาวิทยาลัยราชภัฏสงขลาเน้นการพัฒนาคุณภาพการศึกษาทั้งในระดับปริญญาตรีและ</p>
+            <p class="p">บัณฑิตศึกษา มีศูนย์วิจัยและสถาบันต่างๆ เพื่อสนับสนุนการเรียนรู้ของนักศึกษา รวมถึงการพัฒนาชุมชนท้องถิ่น โดยมีพันธกิจหลักในการบริการวิชาการสู่สังคมและสร้างองค์ความรู้ที่เป็นประโยชน์ต่อชุมชน</p>
+
+                <p class="p"><a href="https://www.skru.ac.th/th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+            </div>
+        <!-- เส้นขอบด้านล่าง -->
+        
+        </div>
+    </div>
+            
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3>หอพักใกล้มหาวิทยาลัยราชภัฏสงขลา </h3>
+        <p class="p">
+        <b>1. ลายจันทร์อพาร์ทเม้นท์ (หอพักหญิง)</b>
+        อยู่ในซอย 25 ถนนกาญจนวนิช ห่างจากมหาวิทยาลัยประมาณ 1.6 กิโลเมตร ราคา 3,000-3,800 บาท/เดือน<a href="https://www.hongpak.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%8A%E0%B9%88%E0%B8%B2/%E0%B8%A1-%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A0%E0%B8%B1%E0%B8%8F%E0%B8%AA%E0%B8%87%E0%B8%82%E0%B8%A5%E0%B8%B2/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2-1500-3000/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>2. ธนาทิพย์อพาร์ทเม้นท์</b>
+        ตั้งอยู่บนถนนกาญจนวนิช ห่างจากมหาวิทยาลัยประมาณ 1.7 กิโลเมตร
+        ราคา 2,200-4,200 บาท/เดือน
+        มีที่จอดรถยนต์ กล้องวงจรปิด และ Wi-Fi<a href="https://www.hongpak.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%8A%E0%B9%88%E0%B8%B2/%E0%B8%A1-%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A0%E0%B8%B1%E0%B8%8F%E0%B8%AA%E0%B8%87%E0%B8%82%E0%B8%A5%E0%B8%B2/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2-1500-3000/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>3. ลิณีวาลีโฮม</b>
+        อยู่ในซอย 41 ถนนกาญจนวนิช ห่างจากมหาวิทยาลัยประมาณ 2.4 กิโลเมตร
+        ราคา 3,000-3,900 บาท/เดือน
+        ให้บริการพื้นที่สงบและมีสิ่งอำนวยความสะดวก เช่น Wi-Fi และที่จอดรถ​<a href="https://www.hongpak.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%8A%E0%B9%88%E0%B8%B2/%E0%B8%A1-%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A0%E0%B8%B1%E0%B8%8F%E0%B8%AA%E0%B8%87%E0%B8%82%E0%B8%A5%E0%B8%B2/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2-1500-3000/">ข้อมูลเพิ่มเติม</a>
+
+                <br><b>4. ต.เจริญแมนชั่น</b>
+                ตั้งอยู่ในเขตรูปช้าง ห่างจากมหาวิทยาลัยประมาณ 2.3 กิโลเมตร
+        ราคา 3,000-3,500 บาท/เดือน
+        มีสิ่งอำนวยความสะดวกครบ เช่น Wi-Fi กล้องวงจรปิด และอยู่ใกล้โลตัส<a href="https://www.hongpak.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%8A%E0%B9%88%E0%B8%B2/%E0%B8%A1-%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A0%E0%B8%B1%E0%B8%8F%E0%B8%AA%E0%B8%87%E0%B8%82%E0%B8%A5%E0%B8%B2/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2-1500-3000/">ข้อมูลเพิ่มเติม</a>
+
+                <br><b>5. Tree House Apartment</b>
+                ตั้งอยู่ในซอย 34 ถนนกาญจนวนิช ห่างจากมหาวิทยาลัยประมาณ 3.9 กิโลเมตร
+        ราคา 3,700-4,500 บาท/เดือน
+        ห้องพักรายวันราคา 600 บาท พร้อมสิ่งอำนวยความสะดวกครบครัน<a href="https://www.hongpak.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B9%80%E0%B8%8A%E0%B9%88%E0%B8%B2/%E0%B8%A1-%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%A0%E0%B8%B1%E0%B8%8F%E0%B8%AA%E0%B8%87%E0%B8%82%E0%B8%A5%E0%B8%B2/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2-1500-3000/">ข้อมูลเพิ่มเติม</a>
+                        </p>
+            </div>
+            
+    <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+    <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ผลงานของมหาวิทยาลัยราชภัฏสงขลา  </h3>
+            <p class="p">
+                
+                มหาวิทยาลัยราชภัฏสงขลา (Songkhla Rajabhat University) มีผลงานเด่นในหลากหลายด้าน โดยเฉพาะในด้านการพัฒนาชุมชนและการส่งเสริมการศึกษาในพื้นที่ภาคใต้<br>
+
+        <b>การวิจัยและพัฒนาชุมชน :</b> มหาวิทยาลัยมีโครงการที่เน้นการพัฒนาท้องถิ่น เช่น การสนับสนุนเกษตรกรในพื้นที่ภาคใต้ การถ่ายทอดเทคโนโลยีและนวัตกรรมเพื่อเพิ่มผลผลิตในภาคเกษตร และการพัฒนาการท่องเที่ยวเชิงวัฒนธรรมเพื่อเสริมสร้างเศรษฐกิจของชุมชนท้องถิ่น
+
+        <br><b>โครงการพัฒนาครูและบุคลากรทางการศึกษา :</b> ในฐานะมหาวิทยาลัยที่มีรากฐานมาจากวิทยาลัยครู มหาวิทยาลัยราชภัฏสงขลาได้จัดโครงการฝึกอบรมครูในพื้นที่ภาคใต้ รวมถึงการสร้างเครือข่ายครูที่มีศักยภาพเพื่อพัฒนาคุณภาพการศึกษาในระดับท้องถิ่น
+
+        <br><b>ศูนย์วิทยาศาสตร์และสิ่งแวดล้อม   :</b>  มหาวิทยาลัยได้พัฒนาศูนย์วิทยาศาสตร์เพื่อสนับสนุนการเรียนรู้ด้านวิทยาศาสตร์และเทคโนโลยี รวมถึงงานวิจัยเกี่ยวกับสิ่งแวดล้อม เช่น การอนุรักษ์ทรัพยากรธรรมชาติในพื้นที่ภาคใต้ และการจัดการปัญหาขยะในชุมชน
+
+        <br><b>การพัฒนาระบบการเรียนการสอนออนไลน์ :</b>การปรับตัวเข้าสู่ยุคดิจิทัลเป็นอีกหนึ่งจุดเด่นของมหาวิทยาลัย โดยการพัฒนาระบบ SKRU Online Learning Center เพื่อสนับสนุนการเรียนการสอนออนไลน์ที่มีคุณภาพ
+        </p>
+        </div>
+</div>
+
+
+    <div> 
+        <h2>
+            3.มหาวิทยาลัยนราธิวาสราชนครินทร์  (PNU.) 
+        </h2>
+    </div>
+
+       
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- รูป -->
+        <img src="PNU.topic.png" alt="University" style="margin-right: 20px; width: 50%; height: auto; border: 4px solid #000000;">
+        
+        <!-- ข้อความที่อยู่ขวาของรูป -->
+        <div>
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ประวัติของมหาวิทยาลัย</h3>
+        <p class="p2">
+            มหาวิทยาลัยนราธิวาสราชนครินทร์ (Narasuan University) ก่อตั้งขึ้นเมื่อวันที่ 9 กุมภาพันธ์<br>
+        </p2>
+        <p class="p">
+            พ.ศ. 2548 โดยการรวมตัวของหลายสถาบันการศึกษาในจังหวัดนราธิวาส เช่น วิทยาลัยเทคนิคนราธิวาส, วิทยาลัยเกษตรและเทคโนโลยีนราธิวาส, และวิทยาลัยการอาชีพต่างๆ โดยมีเป้าหมายในการพัฒนาและส่งเสริมการศึกษาในภาคใต้ของประเทศไทย​
+
+            <p class="p2">มหาวิทยาลัยมีพันธกิจในการพัฒนาผู้เรียนให้มีคุณภาพ และเป็นแหล่งการศึกษาแห่งใหม่ที่</p>
+            <p class="p">สามารถส่งเสริมการเรียนรู้และวิจัยในพื้นที่ภาคใต้ โดยมหาวิทยาลัยมุ่งเน้นการให้ความรู้ด้านวิทยาศาสตร์ เทคโนโลยี และการเกษตร โดยเฉพาะในเรื่องของการพัฒนาเทคโนโลยีและการวิจัยที่สอดคล้องกับความต้องการของท้องถิ่น </p>
+
+            <p class="p2">นอกจากนี้ มหาวิทยาลัยนราธิวาสราชนครินทร์ยังมุ่งเน้นการพัฒนาอย่างยั่งยืนในพื้นที่โดยรอบ</p>
+            <p class="p">การทำงานร่วมกับชุมชนและสถาบันอื่นๆ เพื่อสร้างความมั่นคงและความเจริญรุ่งเรืองให้กับภูมิภาค โดยจัดกิจกรรมและหลักสูตรที่ช่วยส่งเสริมให้ผู้เรียนมีทักษะที่จำเป็นในตลาดแรงงาน</p>
+
+            <p class="p2">ปัจจุบัน มหาวิทยาลัยนราธิวาสราชนครินทร์ได้ขยายสาขาการเรียนการสอนและวิจัยอย่าง </p>
+            <p class="p"> ต่อเนื่อง โดยมีความสำคัญต่อการพัฒนาชุมชนในภาคใต้ รวมถึงการสนับสนุนให้ความรู้และวิจัยที่สามารถนำไปใช้ประโยชน์ได้จริงในภาคการเกษตรและอุตสาหกรรมต่างๆ
+                <a href="https://www.pnu.ac.th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+            </div>
+      
+        </div>
+    </div>
+            
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3>หอพักใกล้มหาวิทยาลัยนราธิวาสราชนครินทร์  </h3>
+        <p class="p">
+        <b>1. พฤกษาเฮ้าส์ นราธิวาส</b>
+        หอพักตั้งอยู่ที่ซอยตรีเพชร ใกล้มหาวิทยาลัย โดยมีค่าเช่ารายเดือนอยู่ระหว่าง 1,800 - 2,800 บาท​<a href="https://www.thaiapartment.com/%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C/%E0%B8%96%E0%B8%99%E0%B8%99%E0%B8%99%E0%B8%A3%E0%B8%B2%E0%B8%98%E0%B8%B4%E0%B8%A7%E0%B8%B2%E0%B8%AA%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%99%E0%B8%84%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>2. หอพักมณีรัตน์</b>
+        หอพักนี้มีความสะดวกสบายและเป็นที่นิยมสำหรับนักศึกษาที่มองหาที่พักราคาไม่สูงมาก ใกล้กับมหาวิทยาลัย​<a href="https://www.thaiapartment.com/%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C/%E0%B8%96%E0%B8%99%E0%B8%99%E0%B8%99%E0%B8%A3%E0%B8%B2%E0%B8%98%E0%B8%B4%E0%B8%A7%E0%B8%B2%E0%B8%AA%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%99%E0%B8%84%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>3. หอพักบ้านเกรียงไกร</b>
+        อยู่ใกล้มหาวิทยาลัย มีค่าเช่ารายเดือนที่ค่อนข้างเหมาะสมและมีสิ่งอำนวยความสะดวกพื้นฐาน​<a href="https://www.renthub.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81/%E0%B8%A1-%E0%B8%99%E0%B8%A3%E0%B8%B2%E0%B8%98%E0%B8%B4%E0%B8%A7%E0%B8%B2%E0%B8%AA%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%84%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C">ข้อมูลเพิ่มเติม</a>
+
+                <br><b>4. หอพักอพาร์ทเม้นท์ใกล้ ม.นราธิวาสราชนครินทร์</b>
+                อพาร์ทเม้นท์ที่มีหลากหลายราคา ตั้งแต่ 3,500 - 8,000 บาท ตามประเภทของห้อง<a href="https://www.renthub.in.th/%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C-%E0%B8%AB%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%9E%E0%B8%B1%E0%B8%81-%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81/%E0%B8%A1-%E0%B8%99%E0%B8%A3%E0%B8%B2%E0%B8%98%E0%B8%B4%E0%B8%A7%E0%B8%B2%E0%B8%AA%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%84%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C">ข้อมูลเพิ่มเติม</a>
+
+                <br><b>5. หอพักหรูฟ้า</b>
+                เป็นหอพักที่มีสิ่งอำนวยความสะดวกครบครัน และเหมาะกับผู้ที่ต้องการที่พักระดับหรูใกล้มหาวิทยาลัย​<a href="https://www.thaiapartment.com/%E0%B8%84%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%B2%E0%B8%AD%E0%B8%9E%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%97%E0%B9%80%E0%B8%A1%E0%B9%89%E0%B8%99%E0%B8%97%E0%B9%8C/%E0%B8%96%E0%B8%99%E0%B8%99%E0%B8%99%E0%B8%A3%E0%B8%B2%E0%B8%98%E0%B8%B4%E0%B8%A7%E0%B8%B2%E0%B8%AA%E0%B8%A3%E0%B8%B2%E0%B8%8A%E0%B8%99%E0%B8%84%E0%B8%A3%E0%B8%B4%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B9%8C">ข้อมูลเพิ่มเติม</a>
+                        </p>
+            </div>
+            
+    <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+    <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ผลงานของมหาวิทยาลัยนราธิวาสราชนครินทร์   </h3>
+            <p class="p">
+                
+                มหาวิทยาลัยนราธิวาสราชนครินทร์ (Narusit Rajanagarindra University) ได้มีผลงานที่โดดเด่นในหลายด้านทั้งการศึกษา การวิจัย และการมีส่วนร่วมในชุมชน ดังนี้:<br>
+
+        <b>ด้านวิจัยทางการแพทย์ :</b> มหาวิทยาลัยมีการร่วมมือกับโรงพยาบาลต่าง ๆ ในภาคใต้ของไทย เพื่อพัฒนางานวิจัยทางการแพทย์และการรักษาโรคต่าง ๆ โดยเฉพาะการวิจัยที่เกี่ยวข้องกับโรคอุบัติใหม่และโรคที่เกิดขึ้นในพื้นที่ภาคใต้ เช่น การวิจัยด้านโรคมาลาเรียและโรคติดเชื้อจากการขยายตัวของเศรษฐกิจ.
+
+        <br><b>การพัฒนาชุมชนและสังคม :</b> ใมหาวิทยาลัยมีการจัดตั้งโครงการพัฒนาและส่งเสริมทักษะอาชีพให้กับชุมชน โดยเฉพาะในด้านเกษตรกรรมและการใช้เทคโนโลยีสมัยใหม่ในการพัฒนาชุมชน. นอกจากนี้ยังมีการให้ความรู้เกี่ยวกับการส่งเสริมเศรษฐกิจและการพัฒนาที่ยั่งยืน
+
+        <br><b>ความเป็นเลิศทางด้านวิทยาศาสตร์และเทคโนโลยี :</b>  มหาวิทยาลัยได้พัฒนาโครงการและผลงานในด้านวิทยาศาสตร์และเทคโนโลยีที่เกี่ยวข้องกับการแก้ไขปัญหาท้องถิ่น เช่น การพัฒนาเทคโนโลยีการเกษตรเพื่อเพิ่มผลผลิต และการส่งเสริมการวิจัยในสาขาวิศวกรรมและเทคโนโลยีสารสนเทศ
+
+        </p>
+        </div>
+</div>
+
+    
+    <div> 
+        <h2>
+            4.มหาวิทยาลัยวลัยลักษณ์ (WU.) 
+        </h2>
+    </div>
+
+      
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- รูป -->
+        <img src="Wu.topic.png" alt="University" style="margin-right: 20px; width: 50%; height: auto; border: 4px solid #000000;">
+        
+        <!-- ข้อความที่อยู่ขวาของรูป -->
+        <div>
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ประวัติของมหาวิทยาลัย</h3>
+        <p class="p2">
+            มหาวิทยาลัยวลัยลักษณ์ (Walailak University) ตั้งอยู่ในจังหวัดนครศรีธรรมราช ภาคใต้<br>
+        </p2>
+        <p class="p">
+            ของประเทศไทย ก่อตั้งขึ้นเมื่อปี พ.ศ. 2547 ด้วยวัตถุประสงค์ในการเป็นมหาวิทยาลัยระดับสูงที่มีคุณภาพและทันสมัยในการศึกษา โดยมีเป้าหมายในการพัฒนานักศึกษาที่สามารถตอบสนองต่อความต้องการในระดับประเทศและระดับโลก นอกจากนี้ มหาวิทยาลัยยังให้ความสำคัญในการส่งเสริมการวิจัยที่สร้างสรรค์และตอบสนองต่อปัญหาของสังคมและท้องถิ่น
+
+            <p class="p2">ในระยะเริ่มต้น มหาวิทยาลัยวลัยลักษณ์มีการพัฒนาอย่างรวดเร็ว โดยมุ่งเน้นการจัดการ</p>
+            <p class="p">ศึกษาในหลายสาขาวิชาที่ครอบคลุมทั้งด้านวิทยาศาสตร์ เทคโนโลยี สังคมศาสตร์ และมนุษยศาสตร์ ซึ่งได้ยึดหลักการศึกษาแบบบูรณาการที่เชื่อมโยงกับการพัฒนาสังคมและชุมชน โดยเฉพาะการพัฒนาในด้านวิศวกรรมศาสตร์และเทคโนโลยีเพื่อยกระดับเศรษฐกิจและอุตสาหกรรมของภาคใต้</p>
+
+            <p class="p2">มหาวิทยาลัยวลัยลักษณ์ยังให้ความสำคัญในการสร้างความร่วมมือกับหน่วยงานต่างๆ</p>
+                <p class="p">ทั้งภายในประเทศและต่างประเทศ เพื่อขยายขอบเขตการวิจัยและการพัฒนา โดยเฉพาะในสาขาวิทยาศาสตร์และเทคโนโลยี ซึ่งได้ผลักดันให้มหาวิทยาลัยได้รับการยอมรับในระดับสากล และมีการส่งนักศึกษาไปศึกษาต่อในมหาวิทยาลัยและสถาบันการศึกษาชั้นนำทั่วโลก
+            <a href="https://www.wu.ac.th/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+</div>
+
+        </div>
+    </div>
+            
+    <div style="display: flex; flex-direction: row; align-items: flex-start;">
+        <!-- ข้อความเกี่ยวกับผลงานของมหาวิทยาลัย -->
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+            <h3>หอพักใกล้มหาวิทยาลัยนราธิวาสราชนครินทร์  </h3>
+        <p class="p">
+        <b>1. หอพักวลัยลักษณ์</b>
+        เป็นหอพักที่อยู่ภายในพื้นที่ของมหาวิทยาลัย เหมาะสำหรับนักศึกษาที่ต้องการความสะดวกสบายในการเดินทางไปเรียน​<a href="https://www.wu.ac.th/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>2. หอพักบ้านสวน</b>
+        อยู่ใกล้กับมหาวิทยาลัยวลัยลักษณ์ มีห้องพักหลายประเภทและบริการสิ่งอำนวยความสะดวกครบครัน​<a href="https://www.facebook.com/BanSuanWalailak/">ข้อมูลเพิ่มเติม</a>
+
+        <br><b>3. หอพักบ้านมาลัย</b>
+        เป็นหอพักที่ตั้งอยู่ไม่ไกลจากมหาวิทยาลัย เหมาะสำหรับนักศึกษาที่ต้องการความเงียบสงบและใกล้แหล่งการเรียนการสอน​<a href="https://www.facebook.com/MalaiDormitory">ข้อมูลเพิ่มเติม</a>
+
+                <br><b>4. หอพักบ้านสมบัติ </b>
+                หอพักที่มีความปลอดภัยและสะดวกสบาย ใกล้มหาวิทยาลัยวลัยลักษณ์<a href="https://www.google.com/search?q=%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%AA%E0%B8%A1%E0%B8%9A%E0%B8%B1%E0%B8%95%E0%B8%B4&sca_esv=2ba1e0c14cc8627a&rlz=1C1VDKB_enTH1130TH1134&ei=8EtHZ_eqKdyWnesPq6LuyQQ&ved=0ahUKEwj34oS0-vyJAxVcS2cHHSuRO0kQ4dUDCA8&uact=5&oq=%E0%B8%AB%E0%B8%AD%E0%B8%9E%E0%B8%B1%E0%B8%81%E0%B8%9A%E0%B9%89%E0%B8%B2%E0%B8%99%E0%B8%AA%E0%B8%A1%E0%B8%9A%E0%B8%B1%E0%B8%95%E0%B8%B4&gs_lp=Egxnd3Mtd2l6LXNlcnAiLeC4q-C4reC4nuC4seC4geC4muC5ieC4suC4meC4quC4oeC4muC4seC4leC4tDIOEC4YgAQYxwEYjgUYrwEyCBAAGIAEGKIEMggQABiABBiiBDIIEAAYgAQYogQyCBAAGIAEGKIEMggQABiiBBiJBTIdEC4YgAQYxwEYjgUYrwEYlwUY3AQY3gQY4ATYAQFIuwNQpQJYpQJwAXgAkAEAmAFZoAGiAaoBATK4AQPIAQD4AQGYAgKgAnDCAgsQABiABBiwAxiiBMICCBAAGLADGO8FmAMAiAYBkAYEugYGCAEQARgUkgcDMS4xoAfVCg&sclient=gws-wiz-serp">ข้อมูลเพิ่มเติม</a>
+
+                <br><b>5. หอพักวิลล่าแกรนด์</b>
+                ตั้งอยู่ในทำเลที่สะดวกสบาย ใกล้กับมหาวิทยาลัยและสถานที่สำคัญต่างๆ​<a href="https://www.ddproperty.com/%E0%B9%82%E0%B8%84%E0%B8%A3%E0%B8%87%E0%B8%81%E0%B8%B2%E0%B8%A3/6842-the-grand-villa-%E0%B9%80%E0%B8%94%E0%B8%AD%E0%B8%B0-%E0%B9%81%E0%B8%81%E0%B8%A3%E0%B8%99%E0%B8%94%E0%B9%8C-%E0%B8%A7%E0%B8%B4%E0%B8%A5%E0%B8%A5%E0%B9%88%E0%B8%B2">ข้อมูลเพิ่มเติม</a>
+                        </p>
+            </div>
+            
+    <!-- ข้อความเกี่ยวกับหอพักใกล้มหาวิทยาลัย -->
+    <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+        <h3>ผลงานของมหาวิทยาลัยนราธิวาสราชนครินทร์   </h3>
+            <p class="p">
+                
+        มหาวิทยาลัยวลัยลักษณ์ (Walailak University) มีผลงานเด่นที่เน้นไปในหลายด้าน รวมทั้งการวิจัย, การพัฒนาชุมชน, และการส่งเสริมการศึกษาในภาคใต้ของประเทศไทย ผลงานที่เด่นๆ ได้แก่:<br>
+
+        <b>งานวิจัยและนวัตกรรม:</b>  มหาวิทยาลัยวลัยลักษณ์มีผลงานด้านการวิจัยในหลายสาขา เช่น วิทยาศาสตร์และเทคโนโลยี ซึ่งมุ่งพัฒนาเทคโนโลยีที่สามารถนำไปใช้ในอุตสาหกรรมและการพัฒนาชุมชน โดยมีการตั้งศูนย์วิจัยที่เชื่อมโยงกับความต้องการของภาคอุตสาหกรรมในพื้นที่
+
+        <br><b>ความร่วมมือกับภาคธุรกิจและชุมชน :</b>มหาวิทยาลัยมีการร่วมมือกับองค์กรทั้งภาครัฐและเอกชน เพื่อส่งเสริมการพัฒนาเศรษฐกิจและสังคมในภาคใต้ โดยเน้นการวิจัยที่สามารถตอบสนองต่อปัญหาของท้องถิ่น เช่น การเกษตร การอนุรักษ์สิ่งแวดล้อม และการพัฒนาอุตสาหกรรมในพื้นที่
+
+        <br><b>การพัฒนาชุมชนและสิ่งแวดล้อม :</b> : มหาวิทยาลัยยังมีการริเริ่มโครงการต่างๆ เพื่อส่งเสริมความยั่งยืนในด้านสิ่งแวดล้อมและชุมชน โดยเน้นการพัฒนาโครงการที่เป็นมิตรกับสิ่งแวดล้อม และการส่งเสริมความรู้เกี่ยวกับการจัดการทรัพยากรธรรมชาติในพื้นที่.
+
+        </p>
+        </div>
+</div>
+
+
+
+    <footer>
+        <div class="footer-section">
+            <h5>ข้อมูลเกี่ยวกับเว็บไซต์</h5>
+            <p>เว็ปไซต์สำหรับแนะนำมหาวิทยาลัยและแนะนำการสมัครเข้ามหาวิทยาลัย <br><br>หากสนใจหัวข้อใดสามารถกดเข้าเพื่อดูเนื้อหาข้อมูลที่คุณสนใจเพิ่มเติม</p>
+        </div>
+        <div class="footer-section">
+            <h5>แหล่งข้อมูลอ้างอิง</h5>
+            <p>แหล่งข้อมูลอ้างอิงของเนื้อหา<br><br> 
+                <a href="https://www.mytcas.com/" target="_blank">https://www.mytcas.com/</a><br><br>
+                <a href="https://www.opendurian.com/news/Uni_FoE/" target="_blank">https://www.opendurian.com/news/Uni_FoE/</a><br><br>
+                <a href="https://www.dek-d.com/tcas/" target="_blank">https://www.dek-d.com/tcas/</a></p>
+        </div>
+        <div class="footer-section">
+            <h5>ข้อมูลติดต่อ</h5>
+            <p>Thiwthat.chanthakarm@e-tech.ac.th <br><br>099-099-xxxx <br><br> IG: tthiwthat</p>
+        </div>
+    </footer>
+</body>
+<script>
+    
+    document.addEventListener("click", (event) => {
+    if (event.target.tagName !== "BUTTON") {
+    const shape = document.createElement("div");
+    shape.classList.add("shape");
+
+    const shapes = ["triangle", "hexagon","Diamond","star"];
+    shape.classList.add(shapes[Math.floor(Math.random() * shapes.length)]);
+
+    const shapeSize = 50; // 50x50 px
+    const x = event.pageX - shapeSize / 1;
+    const y = event.pageY - shapeSize / 1;
+    shape.style.left = `${x}px`;
+    shape.style.top = `${y}px`;
+
+    document.body.appendChild(shape);
+
+    // ลบรูปร่างเมื่ออนิเมชันเสร็จ
+    setTimeout(() => {
+      shape.remove();
+    }, 1500);
+    }
+    });
+       
+</script>

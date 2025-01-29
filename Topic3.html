@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My New Website</title>
+    <link rel="stylesheet" href="styles.css"> <!-- เชื่อมไฟล์ CSS -->
+    <style>
+    /* รีเซ็ต CSS สำหรับหน้าจอ */
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .falling-squares-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .square { /* สี่เหลี่ยม */
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #64c8c6; 
+            top: -50px; /* เริ่มจากด้านบน */
+            animation: fall linear infinite;
+        }        
+        @keyframes fall { /* การเคลื่อนไหวสี่เหลี่ยม */ 
+            0% {
+                transform: translateY(-50px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
+        .shape {
+            position: absolute;
+            transform: scale(0);
+            animation: grow-shrink 1.5s ease-out forwards;
+        }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 120px solid #ff8fa5;
+        }
+        .hexagon {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        .Diamond {
+            width: 120px;
+            height: 120px;
+            background: #ff8fa5;
+        }
+        .star {
+            width: 150px;
+            height: 150px;
+            background-color: #ff8fa5;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        @keyframes grow-shrink {
+            0% {
+            transform: scale(0);
+            opacity: 1;
+            }
+            50% {
+            transform: scale(1.5);
+            }
+            100% {
+            transform: scale(0);
+            opacity: 0;
+            }
+        }
+
+         /* จัดการส่วนของ Body */
+         body {
+            display: flex;
+            flex-direction: column;
+            height: 100%; /* ความสูงเต็มหน้าจอ */
+            margin: 0;
+            justify-content: space-between; /* กำหนดให้เนื้อหาอยู่ด้านบน และ footer อยู่ด้านล่าง */
+            font-family: Arial, sans-serif;
+            color: #c9ceec;
+            background-color: #edd8db;
+        }
+
+        @keyframes slideInRight {
+            20% {
+            transform: translateX(100%); /* เริ่มจากนอกหน้าจอ */
+            background-color: #edd8db; /* เริ่มด้วยสีดำ */
+            opacity: 0; /* โปร่งใส */
+        }
+            80% {
+            background-color: #ff8fa5; /* เปลี่ยนเป็นสีฟ้าตอนกลาง */
+            opacity: 1; /* แสดงเต็ม */
+        }
+            100% {
+            transform: translateX(0); /* มาถึงตำแหน่งสุดท้าย */
+            background-color: #000000; /* คงสีฟ้าไว้ */
+            opacity: 1;
+        }}
+        h1{
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(255, 243, 243);
+            font-weight: 700;
+            font-size: 30px;
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 54px;
+            margin: 60px 0px 20px 50px;
+            text-align: left;
+        }
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 700;
+            font-size: 25px;
+            text-align: left;
+            margin-bottom: 10px;
+
+        }
+        h5 {
+            font-family: 'Montserrat', sans-serif;
+            color: #ff8fa5;
+            font-weight: 700;
+            font-size: 30px;
+            text-align: center;
+        }
+        .p {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 5px;
+            line-height: 1.8;
+        }
+        .p2 {
+            font-family: 'Montserrat', sans-serif;
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-size: 22px;
+            text-align: left;
+            margin-bottom: 5px;
+            line-height: 1.8;
+            margin-left: 50px;
+        }
+        .description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 200;
+            color: rgb(0, 0, 0);
+            margin-top: 20px; /* เว้นระยะห่างระหว่างรูปกับข้อความ */
+            text-align: left;
+        }
+
+        
+        /* การตั้งค่าพื้นฐานสำหรับ header */
+        header {
+            display: flex;
+            justify-content: flex-start; /* ทำให้ข้อความชิดซ้าย */
+            align-items: center;
+            background-color: #0a0a0a;  /* สีพื้นหลังคล้ายกับในเว็บไซต์ */
+            padding: 30px;
+            height: 15vh;  /* ใช้ความสูงเต็มหน้าจอ */
+            z-index: 10;
+        }
+
+        /* ช่องแต่ละช่องใน header */
+        .header-item {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 50px;
+            position: relative;
+            color: #d1d1d1;
+            text-transform: uppercase;
+            text-align: center;
+            transition: color 0.3s;
+        }
+
+        /* การจัดการลิงก์ */
+        .header-item a {
+            color: inherit;
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 15px;
+            transition: transform 0.3s, color 0.3s;
+            border-right: 3px solid white; /* เพิ่มเส้นใต้ข้อความ */
+            padding-right: 10px;
+        }
+
+        /* เอฟเฟกต์เมื่อเมาส์ชี้ไปที่ลิงก์ */
+        .header-item a:hover {
+            color: #ff70a6;  /* เปลี่ยนสีเมื่อ hover */
+            transform: translateY(-5px);  /* เคลื่อนที่ขึ้นเล็กน้อย */
+        }
+
+        /* เพิ่มเส้นใต้เมื่อ hover */
+        .header-item a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff70a6;  /* สีของเส้นใต้ */
+            transition: width 0.3s;
+        }
+
+        .header-item a:hover::after {
+            width: 100%;  /* เส้นใต้จะขยายเต็มความยาว */
+        }
+
+        /* การจัดการการเปลี่ยนสีเมื่อเมาส์ชี้ */
+        .header-item:hover {
+            color: #ff70a6;  /* เปลี่ยนสีข้อความ */
+        }
+
+        /* การเพิ่มการเคลื่อนไหว */
+        header {
+            animation: headerAnimation 1.5s ease-out forwards;
+        }
+        .header-left {
+            text-align: left;
+            color: white;
+            font-size: 15px;
+            margin-right: 180px ;
+        }
+
+        @keyframes headerAnimation {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .slideshow-container {
+            max-width: 1200px;
+            position: relative;
+            margin: 0; /* ลบ margin เพื่อให้ชิดซ้าย */
+            padding: 0; /* ลบ padding หากมี */
+            overflow: hidden;
+            border-radius: 10px;
+            display: flex;
+            justify-content: flex-start; /* ชิดซ้าย */
+            align-items: center; /* จัดแนวในแนวตั้ง */
+        }
+
+        .mySlides {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            flex: 1;
+        }
+
+        .active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        img {
+            width: 50%;
+            height: auto;
+            margin: 10px 0px 0px 0px;  /* ลด margin ด้านบนและด้านล่าง */
+            border: 4px solid #000000;
+            z-index: 10;
+        }
+
+        footer {
+            margin-top: auto; /* ทำให้ footer ดันตัวเองไปล่างสุด */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 360px;
+            background-color: #252525;
+            color: #fff;
+            width: 100%;
+            margin-top: 100px;
+            z-index: 10;
+        }           
+        .footer-section {
+            width: 33%;
+            text-align: center; 
+            border-right: 3px solid #fff; /* เส้นขวา */
+            height: 80%;
+        }.footer-section:last-child {
+            border-right: none; /* เอาเส้นขวาออก */
+        }
+        .footer-section h3 {
+            margin-top: 0;
+            color: #e87d93; /* สีหัวข้อ */
+            font-size: 28px;
+        }
+        .footer-section p {
+            margin: 40px 5px 5px 40px ;
+            text-align: left; /* ให้ข้อความชิดซ้าย */
+            font-size: 18px;
+        }
+        a {
+            color: #64c8c6;  /* เปลี่ยนสีลิงก์เป็นสีฟ้า */
+            text-decoration: none;  /* ไม่ให้มีเส้นใต้ */
+        }
+        a:hover {
+            color: #e87d93;  /* เปลี่ยนสีลิงก์เมื่อเมาส์ชี้ */
+            text-decoration: underline;  /* เพิ่มเส้นใต้เมื่อเมาส์ชี้ */
+        }
+    </style>
+</head>
+<body>
+        <div class="square" style="left: 55%; animation-duration: 2s; animation-delay: 1s;"></div>
+        <div class="square" style="left: 30%; animation-duration: 3s; animation-delay: 2s;"></div>
+        <div class="square" style="left: 70%; animation-duration: 2s; animation-delay: 1.5s;"></div>
+        <div class="falling-squares-container">
+        <!-- สี่เหลี่ยม -->
+        <div class="square" style="left: 10%; animation-duration: 1s; animation-delay: 0s;"></div>
+        <div class="square" style="left: 20%; animation-duration: 3s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 90%; animation-duration: 6s; animation-delay: 1.5s;"></div>
+        <div class="square" style="left: 15%; animation-duration: 2s; animation-delay: 0.5s;"></div>
+        <div class="square" style="left: 80%; animation-duration: 1s; animation-delay: 0.5s;"></div>
+    </div>
+
+    <header>
+        <div class="header-left">
+            <h1>แนะนำวิธีการสมัคร<br>เข้ามหาวิทยาลัย</h1>
+        </div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic1.html">มหาวิทยาลัย<br>ภาคเหนือ</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic2.html">มหาวิทยาลัย<br>ภาคกลาง</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic4.html">มหาวิทยาลัย<br>ภาคตะวันออกเฉียงเหนือ</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\Topic5.html">มหาวิทยาลัย<br>ภาคใต้</a></div>
+        <div class="header-item"><a href="d:\ProJect 36-6-Collect\project.html">หน้าหลัก</a></div>
+        
+    </header>
+        <div> 
+            <h2>
+                แนะนำระบบ T-CAS 
+            </h2>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+            <!-- รูปภาพที่ 1 -->
+            <img src="4.topic.png" alt="Image 1" style="width: 24%; border: 2px solid #000;">
+            <!-- รูปภาพที่ 2 -->
+            <img src="1.topic.png" alt="Image 2" style="width: 24%; border: 2px solid #000;">
+            <!-- รูปภาพที่ 3 -->
+            <img src="3.topic.png" alt="Image 3" style="width: 24%; border: 2px solid #000;">
+            <!-- รูปภาพที่ 4 -->
+            <img src="2.topic.png" alt="Image 4" style="width: 24%; border: 2px solid #000;">
+        </div>
+        
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9; margin-top: 20px;">
+            <h3>ระบบ T-CAS (Thai University Central Admission System)</h3>
+            <p class="p2">
+                T-CAS คือระบบการคัดเลือกเข้าศึกษาต่อในระดับอุดมศึกษาของประเทศไทยที่จัดการโดยที่ประชุมอธิการบดีแห่งประเทศไทย (ทปอ.) โดยมีเป้าหมายเพื่อสร้างความเป็นธรรมแก่ผู้สมัคร ลดค่าใช้จ่ายในการสมัครสอบ และช่วยให้นักเรียนวางแผนเส้นทางการศึกษาของตัวเองได้อย่างชัดเจนยิ่งขึ้น
+            </p2>
+            <p class="p">
+                <b>1. รอบ Portfolio</b>
+        รับสมัครผ่าน แฟ้มสะสมผลงาน (Portfolio) โดยไม่ใช้คะแนนสอบ GAT/PAT หรือ O-NET
+        เหมาะสำหรับนักเรียนที่มีความสามารถหรือรางวัลโดดเด่นในด้านต่าง ๆแฟ้มสะสมผลงาน ใบเกียรติบัตร
+        
+        <br><b>2. รอบ Quota</b>
+        รับสมัครในรูปแบบ โควตาพื้นที่หรือโครงการพิเศษ
+        ใช้คะแนนสอบ GAT/PAT หรือวิชาเฉพาะตามที่แต่ละมหาวิทยาลัยกำหนด
+        เน้นนักเรียนในพื้นที่ที่กำหนดหรือโครงการความสามารถเฉพาะ 
+        <br><b>3. รอบ Admission 1</b>
+        การสมัครผ่านระบบ Admission กลาง โดยพิจารณาจากคะแนนสอบ GAT/PAT, O-NET และ 9 วิชาสามัญ
+        ผู้สมัครต้องเลือกคณะตามลำดับความสนใจสูงสุด (เลือกได้ 4 อันดับ)
+        <br><b>4. รอบ Direct Admission</b>
+        เป็นรอบที่มหาวิทยาลัยรับตรงเอง โดยไม่ผ่านระบบกลาง
+        ผู้สมัครสามารถเลือกสมัครกับมหาวิทยาลัยได้โดยตรง
+        เหมาะสำหรับผู้ที่ยังไม่ได้ที่เรียนในรอบก่อนหน้า
+        <br><br>วิธีการสมัคร T-CAS
+                เตรียมตัวและค้นหาตัวเอง
+                
+                ทบทวนว่าเราสนใจเรียนในคณะหรือสาขาอะไร
+                สำรวจความชอบ ความถนัด และเป้าหมายในอนาคต
+                ใช้เครื่องมือเช่น MyTCAS หรือแบบทดสอบค้นหาตัวเอง
+                ศึกษาเกณฑ์การรับสมัคร
+                
+                เข้าเว็บไซต์ของมหาวิทยาลัยและศึกษาข้อมูลเกี่ยวกับเกณฑ์การรับสมัคร เช่น คะแนนที่ต้องใช้ในแต่ละรอบ
+                สมัครสอบต่าง ๆ
+                
+                สอบที่จำเป็น เช่น GAT/PAT, วิชาเฉพาะ หรือ 9 วิชาสามัญ
+                สมัครสอบผ่าน เว็บไซต์ ทปอ. หรือหน่วยงานที่เกี่ยวข้อง
+                ส่งเอกสารสมัคร
+                
+                เตรียมเอกสาร เช่น Transcript, Portfolio, สำเนาบัตรประชาชน
+                อัปโหลดเอกสารผ่านระบบ MyTCAS หรือเว็บไซต์มหาวิทยาลัย
+                ติดตามผลและยืนยันสิทธิ์
+                
+                ตรวจสอบผลการสมัครผ่านระบบ MyTCAS
+                หากผ่านการคัดเลือก ต้องกดยืนยันสิทธิ์ภายในเวลาที่กำหนด
+                <br><br>เอกสารที่ต้องเตรียมสำหรับ T-CAS
+                Transcript (ใบแสดงผลการเรียน)
+                สำเนาบัตรประชาชน
+                Portfolio (กรณีรอบ Portfolio)
+                ใบสมัครหรือเอกสารเฉพาะของมหาวิทยาลัย
+                คะแนนสอบที่ใช้ (GAT/PAT, O-NET, 9 วิชา)
+                    <a href="https://www.mytcas.com/" target="_blank">อ่านข้อมูลเพิ่มเติม</a></p>
+                </div>
+            </div>
+        </div>
+        <div> 
+            <h2>
+                แนะนำหนังสือเรียน
+            </h2>
+        </div>
+        
+        
+        <div style="display: flex; flex-direction: row-reverse; align-items: flex-start;">
+            <!-- รูป -->
+            <img src="5.topic.png" alt="University" style="margin: 0px 20px 20px 20px; width: 50%; height: auto; border: 4px solid #000000;">
+            
+            <!-- ข้อความที่อยู่ซ้ายของรูป -->
+            <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9;">
+              
+                    <h3>แนะนำหนังสือเตรียมสอบ TCAS A-Level (9 วิชาสามัญ)</h3>
+        <p class="p">
+        <b>1. คณิตศาสตร์ 1</b>
+        "สรุปเข้มคณิตศาสตร์ ม.ปลาย" (The Mathematics)
+รวมสูตรและเทคนิคการทำโจทย์หลากหลายรูปแบบ พร้อมเฉลยละเอียด
+
+        <br><b>2. ฟิสิกส์</b>
+        "Physics Blueprint"
+เน้นสูตรสำคัญ และแบบฝึกหัดประยุกต์ ครอบคลุมข้อสอบเก่า
+
+
+        <br><b>3. เคมี</b>
+        "Final เคมี ม.ปลาย"
+สรุปเนื้อหาเข้าใจง่าย พร้อมแบบฝึกหัดในแต่ละบท
+        <br><b>4. ชีววิทยา
+        </b>
+        "Bio เตรียมสอบ" (โดยครูพี่หมออุ๊)
+ภาพสวย เข้าใจง่าย มีจุดเด่นช่วยจำในแต่ละระบบ
+
+        <br><b>5. ภาษาอังกฤษ</b>
+        "Complete English"
+รวบรวมไวยากรณ์สำคัญ การอ่านและคำศัพท์ที่พบบ่อย
+        <br><b>6. ภาษาไทย </b>
+        "พิชิตภาษาไทย 9 วิชาสามัญ"
+รวมหลักภาษา การอ่านจับใจความ และข้อสอบวรรณคดี
+
+        <br><b>7. สังคมศึกษา </b>
+        "อัพเดตสังคม ม.ปลาย"
+สรุปสาระสำคัญทั้ง 5 หมวดในเล่มเดียว
+
+        <br><b>8. คณิตศาสตร์ 2</b>
+        "คู่มือคณิตศาสตร์ ม.ปลาย" (สำหรับสายศิลป์)
+เนื้อหาเบาๆ สรุปชัดเจน ทำความเข้าใจได้ง่าย
+        <br><b>9. วิทยาศาสตร์ทั่วไป </b>
+        "Science สรุปง่าย ม.ปลาย"
+รวมเนื้อหาฟิสิกส์ เคมี ชีวะ พร้อมโจทย์ตัวอย่าง
+
+        <br><a href="https://serazu.com/web/news/594/%E0%B8%A3%E0%B8%A7%E0%B8%A1%E0%B8%AB%E0%B8%99%E0%B8%B1%E0%B8%87%E0%B8%AA%E0%B8%B7%E0%B8%AD%E0%B8%AA%E0%B8%AD%E0%B8%9A+TCAS+%E0%B8%AA%E0%B8%B3%E0%B8%AB%E0%B8%A3%E0%B8%B1%E0%B8%9A%E0%B9%80%E0%B8%94%E0%B9%87%E0%B8%81+%E0%B8%A1.%E0%B8%9B%E0%B8%A5%E0%B8%B2%E0%B8%A2+%E0%B8%95%E0%B9%89%E0%B8%AD%E0%B8%87%E0%B8%AD%E0%B9%88%E0%B8%B2%E0%B8%99+%21%21%21">ข้อมูลเพิ่มเติมการสั่งหนังสือ</a>
+        </p>
+              
+            </div>
+        </div>
+
+        <div style="flex: 1; min-width: 300px;  padding: 20px; border: 1px solid #ccc; border-radius: 50px; background-color: #f9f9f9; margin-top: 20px;">
+            <h3>เว็บไซต์ของมหาวิทยาลัยต่างๆ ที่แนะนำ</h3>
+
+                
+            </p2>
+            <p class="p">
+                <b>มหาวิทยาลัยภาคเหนือ</b> 
+                <br>1.มหาวิทยาลัยเชียงใหม่ (CMU) <a href="https://www.cmu.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>2.มหาวิทยาลัยราชภัฏเชียงใหม่ (CMRU) <a href="https://www.cmru.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>3.มหาวิทยาลัยแม่ฟ้าหลวง (MFU) <a href="https://www.mfu.ac.th/mfu-landing-page.html" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>4.มหาวิทยาลัยราชภัฏเชียงราย (CRRU) <a href="https://crru.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br><b>มหาวิทยาลัยภาคกลาง</b> 
+                <br>1.จุฬาลงกรณ์มหาวิทยาลัย (CU) <a href="https://www.chula.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>2.มหาวิทยาลัยมหิดล (MU) <a href="https://mahidol.ac.th/th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>3.มหาวิทยาลัยธรรมศาสตร์ (TU.) <a href="https://mahidol.ac.th/th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>4.มหาวิทยาลัยเกษตรศาสตร์ (KU.) <a href="https://www.ku.ac.th/th" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br><b>มหาวิทยาลัยภาคตะวันออกเฉียงเหนือ</b> 
+                <br>1.มหาวิทยาลัยขอนแก่น (KKU.) <a href="https://www.kku.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>2.มหาวิทยาลัยมหาสารคาม (MSU.) <a href="https://www.msu.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>3.มหาวิทยาลัยอุบลราชธานี (UBU.) <a href="https://www.ubu.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>4.มหาวิทยาลัยราชภัฏเลย (LRU.)<a href="https://lru.ac.th/th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br><b>มหาวิทยาลัยภาคใต้</b> 
+                <br>1.มหาวิทยาลัยสงขลานครินทร์ (PSU) <a href="https://www.psu.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>2.มหาวิทยาลัยราชภัฏสงขลา (SKRU) <a href="https://www.skru.ac.th/th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>3.มหาวิทยาลัยนราธิวาสราชนครินทร์ (PNU.) <a href="https://www.pnu.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                <br>4.มหาวิทยาลัยวลัยลักษณ์ (WU.) <a href="https://www.wu.ac.th/" target="_blank">ลิ้งเว็บไซต์มหาวิทยาลัย</a>
+                
+       
+                    
+
+
+
+
+
+            </p>
+                </div>
+            </div>
+        </div>
+
+
+    <footer>
+        <div class="footer-section">
+            <h5>ข้อมูลเกี่ยวกับเว็บไซต์</h5>
+            <p>เว็ปไซต์สำหรับแนะนำมหาวิทยาลัยและแนะนำการสมัครเข้ามหาวิทยาลัย <br><br>หากสนใจหัวข้อใดสามารถกดเข้าเพื่อดูเนื้อหาข้อมูลที่คุณสนใจเพิ่มเติม</p>
+        </div>
+        <div class="footer-section">
+            <h5>แหล่งข้อมูลอ้างอิง</h5>
+            <p>แหล่งข้อมูลอ้างอิงของเนื้อหา<br><br> 
+                <a href="https://www.mytcas.com/" target="_blank">https://www.mytcas.com/</a><br><br>
+                <a href="https://www.opendurian.com/news/Uni_FoE/" target="_blank">https://www.opendurian.com/news/Uni_FoE/</a><br><br>
+                <a href="https://www.dek-d.com/tcas/" target="_blank">https://www.dek-d.com/tcas/</a></p>
+        </div>
+        <div class="footer-section">
+            <h5>ข้อมูลติดต่อ</h5>
+            <p>Thiwthat.chanthakarm@e-tech.ac.th <br><br>099-099-xxxx <br><br> IG: tthiwthat</p>
+        </div>
+    </footer>
+</body>
+<script>
+    
+    document.addEventListener("click", (event) => {
+    if (event.target.tagName !== "BUTTON") {
+    const shape = document.createElement("div");
+    shape.classList.add("shape");
+
+    const shapes = ["triangle", "hexagon","Diamond","star"];
+    shape.classList.add(shapes[Math.floor(Math.random() * shapes.length)]);
+
+    const shapeSize = 50; // 50x50 px
+    const x = event.pageX - shapeSize / 1;
+    const y = event.pageY - shapeSize / 1;
+    shape.style.left = `${x}px`;
+    shape.style.top = `${y}px`;
+
+    document.body.appendChild(shape);
+
+    // ลบรูปร่างเมื่ออนิเมชันเสร็จ
+    setTimeout(() => {
+      shape.remove();
+    }, 1500);
+    }
+    });
+       
+</script>
